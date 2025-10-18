@@ -34,21 +34,21 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-          {showInstall && (
-            <button
-              style={{ marginTop: '1em' }}
-              onClick={async () => {
-                if (deferredPrompt) {
-                  deferredPrompt.prompt();
-                  const { outcome } = await deferredPrompt.userChoice;
-                  setShowInstall(false);
-                  setDeferredPrompt(null);
-                }
-              }}
-            >
-              Install App
-            </button>
-          )}
+        {showInstall && (
+          <button
+            style={{ marginTop: '1em' }}
+            onClick={async () => {
+              if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                setShowInstall(false);
+                setDeferredPrompt(null);
+              }
+            }}
+          >
+            Install App
+          </button>
+        )}
         <p>
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
