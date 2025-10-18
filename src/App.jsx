@@ -11,6 +11,7 @@ function App() {
 
   useEffect(() => {
     const handler = (e) => {
+      console.log('beforeinstallprompt event fired'); // Debugging log
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstall(true);
@@ -24,7 +25,7 @@ function App() {
       <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          count is ------------- {count}
         </button>
         {showInstall && (
           <button
