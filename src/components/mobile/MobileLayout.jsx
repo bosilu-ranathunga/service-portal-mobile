@@ -25,16 +25,16 @@ const MobileLayout = () => {
 
     fetchUnreadCount();
     const interval = setInterval(fetchUnreadCount, 30000); // Check every 30 seconds
-    
+
     return () => clearInterval(interval);
   }, []);
 
   const navItems = [
-    { path: '/mobile/dashboard', icon: Home, label: 'Dashboard' },
-    { path: '/mobile/assignments', icon: Calendar, label: 'Assignments' },
-    { path: '/mobile/field-service', icon: MapPin, label: 'Field Service' },
-    { path: '/mobile/reports', icon: FileText, label: 'Reports' },
-    { path: '/mobile/profile', icon: User, label: 'Profile' }
+    { path: '/dashboard', icon: Home, label: 'Dashboard' },
+    { path: '/assignments', icon: Calendar, label: 'Assignments' },
+    { path: '/field-service', icon: MapPin, label: 'Field Service' },
+    { path: '/reports', icon: FileText, label: 'Reports' },
+    { path: '/profile', icon: User, label: 'Profile' }
   ];
 
   const handleNavigation = (path) => {
@@ -59,7 +59,7 @@ const MobileLayout = () => {
             </Badge>
           )}
         </div>
-        
+
         <div className="flex items-center space-x-3">
           {/* Notifications */}
           <Button
@@ -70,15 +70,15 @@ const MobileLayout = () => {
           >
             <Bell className="h-5 w-5" />
             {unreadCount > 0 && (
-              <Badge 
-                variant="destructive" 
+              <Badge
+                variant="destructive"
                 className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs p-0 min-w-[20px] bg-red-500 border-2 border-primary"
               >
                 {unreadCount > 99 ? '99+' : unreadCount}
               </Badge>
             )}
           </Button>
-          
+
           {/* Menu Toggle */}
           <Button
             variant="ghost"
@@ -102,14 +102,13 @@ const MobileLayout = () => {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = isActivePath(item.path);
-                
+
                 return (
                   <Button
                     key={item.path}
                     variant={isActive ? "default" : "ghost"}
-                    className={`w-full justify-start mb-1 ${
-                      isActive ? 'bg-primary text-primary-foreground' : ''
-                    }`}
+                    className={`w-full justify-start mb-1 ${isActive ? 'bg-primary text-primary-foreground' : ''
+                      }`}
                     onClick={() => handleNavigation(item.path)}
                   >
                     <Icon className="h-5 w-5 mr-3" />
@@ -133,22 +132,20 @@ const MobileLayout = () => {
           {navItems.slice(0, 4).map((item) => {
             const Icon = item.icon;
             const isActive = isActivePath(item.path);
-            
+
             return (
               <Button
                 key={item.path}
                 variant="ghost"
                 size="sm"
-                className={`flex flex-col items-center space-y-1 py-3 px-4 h-auto min-w-0 rounded-xl transition-all duration-200 ${
-                  isActive 
-                    ? 'text-primary bg-primary/10 shadow-sm' 
+                className={`flex flex-col items-center space-y-1 py-3 px-4 h-auto min-w-0 rounded-xl transition-all duration-200 ${isActive
+                    ? 'text-primary bg-primary/10 shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-                }`}
+                  }`}
                 onClick={() => handleNavigation(item.path)}
               >
-                <div className={`p-1 rounded-lg transition-all duration-200 ${
-                  isActive ? 'bg-primary/20' : ''
-                }`}>
+                <div className={`p-1 rounded-lg transition-all duration-200 ${isActive ? 'bg-primary/20' : ''
+                  }`}>
                   <Icon className="h-5 w-5" />
                 </div>
                 <span className="text-xs font-medium truncate">{item.label}</span>
