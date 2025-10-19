@@ -121,11 +121,11 @@ const MobileDashboard = () => {
           <div className="flex items-center flex-wrap gap-3 mt-4">
             <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
               {networkStatus ? (
-                <Wifi className="h-4 w-4 text-green-white" />
+                <Wifi className="h-4 w-4 text-white" />
               ) : (
                 <WifiOff className="h-4 w-4 text-red-300" />
               )}
-              <span className={`text-sm font-medium ${networkStatus ? 'text-green-white' : 'text-red-300'}`}>
+              <span className={`text-sm font-medium ${networkStatus ? 'text-white' : 'text-red-300'}`}>
                 {networkStatus ? 'Online' : 'Offline'}
               </span>
             </div>
