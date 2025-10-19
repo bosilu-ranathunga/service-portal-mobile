@@ -173,95 +173,104 @@ const MobileDashboard = () => {
 
       </div>
 
-      {/* Today's Schedule - Modern Redesign */}
+      {/* Today's Schedule - Compact Card Design */}
       <div>
         <h3 className="text-lg font-semibold text-gray-800 mb-2">Today's Schedule</h3>
         <div className="space-y-3">
 
-          {/* Job 1 */}
-          <Card className="border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-all">
+          {/* Card 1 */}
+          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-base font-semibold text-gray-800">
-                    Install Laboratory Microscope
-                  </CardTitle>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <MapPin className="h-4 w-4 mr-1 text-gray-500" /> Colombo City Lab
-                  </div>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <Clock className="h-4 w-4 mr-1 text-gray-500" /> 9:30 AM
-                  </div>
-                </div>
-                <Badge className="bg-blue-100 text-blue-700 text-xs">In Progress</Badge>
+                <h4 className="font-semibold text-gray-800 text-base">Metro Hospital</h4>
+                <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
+                  <PlayCircle className="h-3.5 w-3.5 text-blue-600" /> In Progress
+                </span>
               </div>
 
-              <div className="mt-3">
-                <Button
-                  size="sm"
-                  className="w-full flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-                >
-                  <PlayCircle className="h-4 w-4" /> Continue Job
-                </Button>
+              <Badge className="mt-2 bg-blue-100 text-blue-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
+                Emergency Repair
+              </Badge>
+
+              <div className="mt-3 space-y-1 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span>17:00 - 20:00</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                  <span>789 Healthcare Blvd, Medical District, TC 12347</span>
+                </div>
+                <p className="mt-1 text-gray-500 text-sm leading-snug">
+                  Critical cooling system failure in server room
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Job 2 */}
-          <Card className="border-l-4 border-amber-500 shadow-sm hover:shadow-md transition-all">
+          {/* Card 2 */}
+          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-base font-semibold text-gray-800">
-                    Calibrate PH Meter
-                  </CardTitle>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <MapPin className="h-4 w-4 mr-1 text-gray-500" /> Kandy Research Center
-                  </div>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <Clock className="h-4 w-4 mr-1 text-gray-500" /> 11:45 AM
-                  </div>
-                </div>
-                <Badge className="bg-amber-100 text-amber-700 text-xs">Pending</Badge>
+                <h4 className="font-semibold text-gray-800 text-base">BioLab Diagnostics</h4>
+                <span className="text-xs text-amber-600 font-medium flex items-center gap-1">
+                  <Clock className="h-3.5 w-3.5 text-amber-600" /> Pending
+                </span>
               </div>
 
-              <div className="mt-3">
-                <Button
-                  size="sm"
-                  className="w-full flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white"
-                >
-                  <PlayCircle className="h-4 w-4" /> Start Job
-                </Button>
+              <Badge className="mt-2 bg-amber-100 text-amber-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
+                Calibration
+              </Badge>
+
+              <div className="mt-3 space-y-1 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span>10:00 - 11:30</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                  <span>45 Science Park, Colombo 07</span>
+                </div>
+                <p className="mt-1 text-gray-500 text-sm leading-snug">
+                  Scheduled calibration of spectrometer unit
+                </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Job 3 */}
-          <Card className="border-l-4 border-green-500 shadow-sm hover:shadow-md transition-all">
+          {/* Card 3 */}
+          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-base font-semibold text-gray-800">
-                    Replace Spectrophotometer Lamp
-                  </CardTitle>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <MapPin className="h-4 w-4 mr-1 text-gray-500" /> Galle Diagnostic Center
-                  </div>
-                  <div className="flex items-center text-gray-600 text-sm mt-1">
-                    <Clock className="h-4 w-4 mr-1 text-gray-500" /> 2:00 PM
-                  </div>
-                </div>
-                <Badge className="bg-green-100 text-green-700 text-xs">Completed</Badge>
+                <h4 className="font-semibold text-gray-800 text-base">Central Research Facility</h4>
+                <span className="text-xs text-green-600 font-medium flex items-center gap-1">
+                  <CheckCircle className="h-3.5 w-3.5 text-green-600" /> Completed
+                </span>
               </div>
 
-              <div className="mt-3 flex items-center justify-center text-green-600 text-sm font-medium">
-                <CheckCircle className="h-4 w-4 mr-1" /> Completed
+              <Badge className="mt-2 bg-green-100 text-green-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
+                Preventive Maintenance
+              </Badge>
+
+              <div className="mt-3 space-y-1 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span>08:00 - 10:00</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-gray-500" />
+                  <span>21 Lab Street, Galle</span>
+                </div>
+                <p className="mt-1 text-gray-500 text-sm leading-snug">
+                  Completed preventive maintenance for centrifuge machine
+                </p>
               </div>
             </CardContent>
           </Card>
 
         </div>
       </div>
+
 
     </div>
   );
