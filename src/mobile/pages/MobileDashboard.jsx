@@ -194,6 +194,7 @@ const MobileDashboard = () => {
 
   return (
     <div className="p-4 space-y-4 pb-20">
+
       {/* Greeting Header - Modern Redesign */}
       <Card className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 overflow-hidden relative">
         <CardContent className="p-6 relative z-10">
@@ -416,98 +417,6 @@ const MobileDashboard = () => {
         </CardContent>
       </Card>
 
-      {/* Recent Activity - Modern Redesign */}
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-muted/30 to-muted/10 border-b">
-          <CardTitle className="flex items-center space-x-2">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Clock className="h-4 w-4 text-primary" />
-            </div>
-            <span className="text-lg font-semibold">Recent Activity</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          {recentActivity.length === 0 ? (
-            <div className="p-8 text-center">
-              <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <p className="text-muted-foreground font-medium">No recent activity</p>
-              <p className="text-sm text-muted-foreground/70 mt-1">Your activity will appear here</p>
-            </div>
-          ) : (
-            <div className="divide-y divide-border">
-              {recentActivity.slice(0, 5).map((activity, index) => (
-                <div key={index} className="p-4 hover:bg-muted/20 transition-colors">
-                  <div className="flex items-start space-x-3">
-                    <div className="flex-shrink-0 mt-1">
-                      <div className={`p-2 rounded-lg ${activity.type === 'completed' ? 'bg-green-100 text-green-600' :
-                        activity.type === 'in_progress' ? 'bg-blue-100 text-blue-600' :
-                          activity.type === 'accepted' ? 'bg-purple-100 text-purple-600' :
-                            'bg-gray-100 text-gray-600'
-                        }`}>
-                        {getStatusIcon(activity.type)}
-                      </div>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium leading-relaxed text-foreground">
-                        {activity.description}
-                      </p>
-                      <div className="flex items-center justify-between mt-2">
-                        <p className="text-xs text-muted-foreground">
-                          {format(new Date(activity.timestamp), 'MMM dd, HH:mm')}
-                        </p>
-                        {activity.assignment_id && (
-                          <Badge variant="outline" className="text-xs px-2 py-0.5">
-                            #{activity.assignment_id}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Quick Actions - Modern Redesign */}
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b">
-          <CardTitle className="flex items-center space-x-2">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <CheckCircle className="h-4 w-4 text-primary" />
-            </div>
-            <span className="text-lg font-semibold">Quick Actions</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-4">
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              variant="outline"
-              className="h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200/50 hover:bg-blue-100/70 transition-all duration-200"
-              onClick={() => handleQuickAction('create_report')}
-            >
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-blue-600" />
-              </div>
-              <span className="text-xs font-medium text-blue-700">New Report</span>
-            </Button>
-
-            <Button
-              variant="outline"
-              className="h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br from-green-50 to-green-100/50 border-green-200/50 hover:bg-green-100/70 transition-all duration-200"
-              onClick={() => window.location.href = '/mobile/assignments'}
-            >
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Calendar className="h-5 w-5 text-green-600" />
-              </div>
-              <span className="text-xs font-medium text-green-700">View Jobs</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

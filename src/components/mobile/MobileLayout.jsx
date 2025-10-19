@@ -32,8 +32,7 @@ const MobileLayout = () => {
   const navItems = [
     { path: '/dashboard', icon: Home, label: 'Dashboard' },
     { path: '/assignments', icon: Calendar, label: 'Assignments' },
-    { path: '/field-service', icon: MapPin, label: 'Field Service' },
-    { path: '/reports', icon: FileText, label: 'Reports' },
+    { path: '/field-service', icon: FileText, label: 'Field Service' },
     { path: '/profile', icon: User, label: 'Profile' }
   ];
 
@@ -70,7 +69,7 @@ const MobileLayout = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto bg-gray-50">
+      <main className="flex-1 overflow-auto bg-[#f3f4f6]">
         <Outlet />
       </main>
 
