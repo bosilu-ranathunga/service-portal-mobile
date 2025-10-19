@@ -195,14 +195,11 @@ const MobileDashboard = () => {
   return (
     <div className="p-4 space-y-4 pb-20">
       {/* Greeting Header - Modern Redesign */}
-      <Card className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-500 overflow-hidden relative">
-        <div className="absolute inset-0 opacity-20">
-          <div className="w-full h-full bg-white/5 rounded-lg"></div>
-        </div>
+      <Card className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 overflow-hidden relative">
         <CardContent className="p-6 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h2 className="text-2xl font-bold">{getGreeting()}!</h2>
+              <h2 className="text-2xl font-bold text-white">{getGreeting()}!</h2>
               <p className="text-primary-foreground/90 text-base">Ready for today's assignments?</p>
             </div>
             <Avatar className="h-14 w-14 border-3 border-primary-foreground/30 shadow-lg">
@@ -226,19 +223,13 @@ const MobileDashboard = () => {
               </span>
             </div>
 
-            {batteryInfo && (
-              <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
-                <Battery className="h-4 w-4 text-blue-300" />
-                <span className="text-sm font-medium text-blue-300">{batteryInfo.level}%</span>
-              </div>
-            )}
-
             {location && (
               <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
                 <Navigation className="h-4 w-4 text-purple-300" />
                 <span className="text-sm font-medium text-purple-300">GPS Active</span>
               </div>
             )}
+
           </div>
         </CardContent>
       </Card>
@@ -348,9 +339,9 @@ const MobileDashboard = () => {
                     {/* Status Badge */}
                     <Badge
                       className={`text-xs capitalize ${assignment.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
-                          assignment.status === 'in_progress' ? 'bg-blue-100 text-blue-700 border-blue-200' :
-                            assignment.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
-                              'bg-gray-100 text-gray-700 border-gray-200'
+                        assignment.status === 'in_progress' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                          assignment.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                            'bg-gray-100 text-gray-700 border-gray-200'
                         }`}
                     >
                       {assignment.status.replace('_', ' ')}
@@ -451,9 +442,9 @@ const MobileDashboard = () => {
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
                       <div className={`p-2 rounded-lg ${activity.type === 'completed' ? 'bg-green-100 text-green-600' :
-                          activity.type === 'in_progress' ? 'bg-blue-100 text-blue-600' :
-                            activity.type === 'accepted' ? 'bg-purple-100 text-purple-600' :
-                              'bg-gray-100 text-gray-600'
+                        activity.type === 'in_progress' ? 'bg-blue-100 text-blue-600' :
+                          activity.type === 'accepted' ? 'bg-purple-100 text-purple-600' :
+                            'bg-gray-100 text-gray-600'
                         }`}>
                         {getStatusIcon(activity.type)}
                       </div>
