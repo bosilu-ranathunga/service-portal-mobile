@@ -50,14 +50,9 @@ const MobileLayout = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Mobile Header */}
-      <header className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg border-b border-primary/20">
+      <header className="bg-blue-500 text-primary-foreground px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg border-b border-primary/20">
         <div className="flex items-center space-x-3">
-          <h1 className="text-xl font-bold tracking-tight">SP Engineer</h1>
-          {isPWA() && (
-            <Badge variant="secondary" className="text-xs px-2 py-1 bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30">
-              PWA
-            </Badge>
-          )}
+          <h1 className="text-xl font-bold tracking-tight">Servise Pro</h1>
         </div>
 
         <div className="flex items-center space-x-3">
@@ -139,8 +134,8 @@ const MobileLayout = () => {
                 variant="ghost"
                 size="sm"
                 className={`flex flex-col items-center space-y-1 py-3 px-4 h-auto min-w-0 rounded-xl transition-all duration-200 ${isActive
-                    ? 'text-primary bg-primary/10 shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                  ? 'text-primary bg-primary/10 shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   }`}
                 onClick={() => handleNavigation(item.path)}
               >
