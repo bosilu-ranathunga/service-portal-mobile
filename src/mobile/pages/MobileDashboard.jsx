@@ -205,12 +205,6 @@ const MobileDashboard = () => {
               <h2 className="text-2xl font-bold text-white">{getGreeting()}!</h2>
               <p className="text-primary-foreground/90 text-base">Ready for today's assignments?</p>
             </div>
-            <Avatar className="h-14 w-14 border-3 border-primary-foreground/30 shadow-lg">
-              <AvatarImage src={localStorage.getItem('engineer_avatar') || "/avatar-placeholder.png"} />
-              <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-lg font-semibold">
-                EN
-              </AvatarFallback>
-            </Avatar>
             <Avatar
               className="h-14 w-14 border-3 border-primary-foreground/30 shadow-lg cursor-pointer">
               {avatarSrc ? (
