@@ -24,6 +24,7 @@ import {
   vibrate
 } from '@/utils/pwaUtils';
 import { format } from 'date-fns';
+import avatarSrc from '../../assets/icon-192.png';
 
 const MobileDashboard = () => {
   const [stats, setStats] = useState({
@@ -38,6 +39,7 @@ const MobileDashboard = () => {
   const [location, setLocation] = useState(null);
   const [networkStatus, setNetworkStatus] = useState(isOnline());
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -208,6 +210,19 @@ const MobileDashboard = () => {
               <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-lg font-semibold">
                 EN
               </AvatarFallback>
+            </Avatar>
+            <Avatar
+              className="h-14 w-14 border-3 border-primary-foreground/30 shadow-lg cursor-pointer">
+              {avatarSrc ? (
+                <AvatarImage src={avatarSrc} />
+              ) : (
+                <>
+                  <AvatarImage src={"/avatar-placeholder.png"} />
+                  <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-lg font-semibold">
+                    EN
+                  </AvatarFallback>
+                </>
+              )}
             </Avatar>
           </div>
 
