@@ -179,7 +179,7 @@ const MobileDashboard = () => {
         <div className="space-y-3">
 
           {/* Card 1 */}
-          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <Card className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">Metro Hospital</h4>
@@ -209,7 +209,7 @@ const MobileDashboard = () => {
           </Card>
 
           {/* Card 2 */}
-          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <Card className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">BioLab Diagnostics</h4>
@@ -239,7 +239,7 @@ const MobileDashboard = () => {
           </Card>
 
           {/* Card 3 */}
-          <Card className="rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+          <Card className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-all">
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">Central Research Facility</h4>
