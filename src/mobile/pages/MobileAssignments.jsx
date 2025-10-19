@@ -4,11 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Calendar, 
-  MapPin, 
-  Clock, 
-  Search, 
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  Search,
   Filter,
   Phone,
   Navigation,
@@ -139,7 +139,7 @@ const MobileAssignments = () => {
 
   const handleAssignmentAction = async (action, assignment) => {
     vibrate(100);
-    
+
     try {
       switch (action) {
         case 'start':
@@ -164,7 +164,7 @@ const MobileAssignments = () => {
         default:
           return;
       }
-      
+
       // Refresh assignments after action
       await fetchAssignments();
     } catch (error) {
@@ -199,19 +199,19 @@ const MobileAssignments = () => {
                   {assignment.priority}
                 </Badge>
               </div>
-              
+
               <div className="flex items-center space-x-1 mb-2">
                 <StatusIcon className={`h-4 w-4 ${statusConfig.textColor}`} />
                 <span className={`text-sm ${statusConfig.textColor}`}>
                   {statusConfig.label}
                 </span>
               </div>
-              
+
               <Badge variant="outline" className="text-xs">
                 {assignment.type}
               </Badge>
             </div>
-            
+
             <div className={`w-3 h-3 rounded-full ${statusConfig.color}`}></div>
           </div>
 
@@ -219,11 +219,11 @@ const MobileAssignments = () => {
             <div className="flex items-center space-x-2">
               <Clock className="h-4 w-4" />
               <span>
-                {format(parseISO(assignment.scheduled_time), 'HH:mm')} - 
+                {format(parseISO(assignment.scheduled_time), 'HH:mm')} -
                 {format(parseISO(assignment.estimated_end_time || assignment.scheduled_time), 'HH:mm')}
               </span>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <MapPin className="h-4 w-4" />
               <span className="truncate">{assignment.location}</span>
@@ -256,7 +256,7 @@ const MobileAssignments = () => {
                 </Button>
               </>
             )}
-            
+
             {assignment.status === 'accepted' && (
               <>
                 <Button
@@ -275,7 +275,7 @@ const MobileAssignments = () => {
                 </Button>
               </>
             )}
-            
+
             {assignment.status === 'in_progress' && (
               <Button
                 size="sm"
@@ -285,7 +285,7 @@ const MobileAssignments = () => {
                 Complete
               </Button>
             )}
-            
+
             <Button
               size="sm"
               variant="outline"
@@ -293,7 +293,7 @@ const MobileAssignments = () => {
             >
               Details
             </Button>
-            
+
             {assignment.customer_phone && (
               <Button
                 size="sm"
@@ -325,41 +325,6 @@ const MobileAssignments = () => {
 
   return (
     <div className="p-4 space-y-4 pb-20">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Assignments</h1>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={refreshing}
-        >
-          {refreshing ? 'Refreshing...' : 'Refresh'}
-        </Button>
-      </div>
-
-      {/* Search and Filter */}
-      <div className="space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search assignments..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-
-        <Tabs value={selectedStatus} onValueChange={setSelectedStatus}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
-            <TabsTrigger value="pending" className="text-xs">Pending</TabsTrigger>
-            <TabsTrigger value="accepted" className="text-xs">Accepted</TabsTrigger>
-            <TabsTrigger value="in_progress" className="text-xs">Active</TabsTrigger>
-            <TabsTrigger value="completed" className="text-xs">Done</TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </div>
 
       {/* Assignments List */}
       <div className="space-y-4">
@@ -369,7 +334,7 @@ const MobileAssignments = () => {
               <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">No Assignments Found</h3>
               <p className="text-muted-foreground">
-                {searchTerm || selectedStatus !== 'all' 
+                {searchTerm || selectedStatus !== 'all'
                   ? 'Try adjusting your search or filter criteria.'
                   : 'No assignments available at the moment.'}
               </p>

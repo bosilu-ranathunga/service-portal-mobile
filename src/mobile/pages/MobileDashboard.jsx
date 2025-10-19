@@ -24,7 +24,7 @@ import {
   vibrate
 } from '@/utils/pwaUtils';
 import { format } from 'date-fns';
-import avatarSrc from '../../assets/icon-192.png';
+import avatarSrc from '../../assets/dp-1758538868983-920973171.png';
 
 const MobileDashboard = () => {
   const [stats, setStats] = useState({
