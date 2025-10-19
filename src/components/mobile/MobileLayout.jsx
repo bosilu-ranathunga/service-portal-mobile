@@ -44,7 +44,7 @@ const MobileLayout = () => {
   };
 
   const isActivePath = (path) => {
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+    return location.pathname === path || location.pathname.startsWith(path + '/') && location.pathname.split('/')[2] !== undefined;
   };
 
   return (
@@ -53,7 +53,7 @@ const MobileLayout = () => {
       {/* Mobile Header */}
       <header className="bg-blue-500 text-primary-foreground px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg border-b border-primary/20">
         <div className="flex items-center space-x-3">
-          <h1 className="text-xl font-bold tracking-tight">Servise Pro</h1>
+          <span className="text-2xl font-bold">Service Pro</span>
         </div>
 
         <div className="flex items-center space-x-3">
@@ -77,7 +77,7 @@ const MobileLayout = () => {
       {/* Bottom Navigation - Modern Redesign */}
       <nav className="bg-card/95 backdrop-blur-sm border-t border-border px-2 py-2 sticky bottom-0 z-30 shadow-lg">
         <div className="flex justify-around max-w-sm mx-auto">
-          {navItems.slice(0, 4).map((item) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = isActivePath(item.path);
 

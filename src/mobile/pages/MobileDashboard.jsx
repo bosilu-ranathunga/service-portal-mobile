@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  Calendar, 
-  MapPin, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  CheckCircle,
+  AlertCircle,
   Battery,
   Wifi,
   WifiOff,
@@ -16,12 +16,12 @@ import {
   PlayCircle
 } from 'lucide-react';
 import { dashboard, assignments } from '@/services/mobileApi';
-import { 
-  getCurrentLocation, 
-  getBatteryInfo, 
-  isOnline, 
+import {
+  getCurrentLocation,
+  getBatteryInfo,
+  isOnline,
   onNetworkChange,
-  vibrate 
+  vibrate
 } from '@/utils/pwaUtils';
 import { format } from 'date-fns';
 
@@ -43,22 +43,22 @@ const MobileDashboard = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch dashboard stats
         const [statsData, scheduleData, activityData] = await Promise.all([
           dashboard.getStats(),
           dashboard.getTodaySchedule(),
           dashboard.getRecentActivity()
         ]);
-        
+
         setStats(statsData);
         setTodaySchedule(scheduleData);
         setRecentActivity(activityData);
-        
+
         // Get device info
         const battery = await getBatteryInfo();
         setBatteryInfo(battery);
-        
+
         // Get current location
         try {
           const currentLocation = await getCurrentLocation();
@@ -66,7 +66,7 @@ const MobileDashboard = () => {
         } catch (error) {
           console.log('Location access denied or unavailable');
         }
-        
+
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -116,7 +116,7 @@ const MobileDashboard = () => {
 
   const handleQuickAction = (action, data = null) => {
     vibrate(50);
-    
+
     switch (action) {
       case 'start_work':
         // Navigate to assignment details
@@ -195,7 +195,7 @@ const MobileDashboard = () => {
   return (
     <div className="p-4 space-y-4 pb-20">
       {/* Greeting Header - Modern Redesign */}
-      <Card className="bg-gradient-to-br from-primary via-primary/95 to-primary/80 text-primary-foreground overflow-hidden relative">
+      <Card className="bg-gradient-to-r from-blue-600 via-blue-600 to-blue-500 overflow-hidden relative">
         <div className="absolute inset-0 opacity-20">
           <div className="w-full h-full bg-white/5 rounded-lg"></div>
         </div>
@@ -212,7 +212,7 @@ const MobileDashboard = () => {
               </AvatarFallback>
             </Avatar>
           </div>
-          
+
           {/* Device Status Bar - Enhanced */}
           <div className="flex items-center flex-wrap gap-3 mt-4">
             <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
@@ -225,14 +225,14 @@ const MobileDashboard = () => {
                 {networkStatus ? 'Online' : 'Offline'}
               </span>
             </div>
-            
+
             {batteryInfo && (
               <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
                 <Battery className="h-4 w-4 text-blue-300" />
                 <span className="text-sm font-medium text-blue-300">{batteryInfo.level}%</span>
               </div>
             )}
-            
+
             {location && (
               <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
                 <Navigation className="h-4 w-4 text-purple-300" />
@@ -258,7 +258,7 @@ const MobileDashboard = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-gradient-to-br from-green-50 to-green-100/50 border-green-200/50 hover:shadow-md transition-all duration-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -272,7 +272,7 @@ const MobileDashboard = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200/50 hover:shadow-md transition-all duration-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -286,7 +286,7 @@ const MobileDashboard = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200/50 hover:shadow-md transition-all duration-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
@@ -336,23 +336,22 @@ const MobileDashboard = () => {
                       <div className={`w-3 h-3 rounded-full ${getStatusColor(assignment.status)} shadow-sm`}></div>
                       <div>
                         <h3 className="font-semibold text-base leading-tight">{assignment.customer_name}</h3>
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className="mt-1 text-xs px-2 py-0.5 bg-primary/5 text-primary border-primary/20"
                         >
                           {assignment.type}
                         </Badge>
                       </div>
                     </div>
-                    
+
                     {/* Status Badge */}
-                    <Badge 
-                      className={`text-xs capitalize ${
-                        assignment.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
-                        assignment.status === 'in_progress' ? 'bg-blue-100 text-blue-700 border-blue-200' :
-                        assignment.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
-                        'bg-gray-100 text-gray-700 border-gray-200'
-                      }`}
+                    <Badge
+                      className={`text-xs capitalize ${assignment.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
+                          assignment.status === 'in_progress' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                            assignment.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                              'bg-gray-100 text-gray-700 border-gray-200'
+                        }`}
                     >
                       {assignment.status.replace('_', ' ')}
                     </Badge>
@@ -376,7 +375,7 @@ const MobileDashboard = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start space-x-1.5 text-sm">
                       <MapPin className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                       <span className="text-muted-foreground leading-relaxed break-words">
@@ -397,7 +396,7 @@ const MobileDashboard = () => {
                         Start Work
                       </Button>
                     )}
-                    
+
                     {assignment.status === 'in_progress' && (
                       <Button
                         size="sm"
@@ -408,7 +407,7 @@ const MobileDashboard = () => {
                         In Progress
                       </Button>
                     )}
-                    
+
                     <Button
                       variant="outline"
                       size="sm"
@@ -451,12 +450,11 @@ const MobileDashboard = () => {
                 <div key={index} className="p-4 hover:bg-muted/20 transition-colors">
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
-                      <div className={`p-2 rounded-lg ${
-                        activity.type === 'completed' ? 'bg-green-100 text-green-600' :
-                        activity.type === 'in_progress' ? 'bg-blue-100 text-blue-600' :
-                        activity.type === 'accepted' ? 'bg-purple-100 text-purple-600' :
-                        'bg-gray-100 text-gray-600'
-                      }`}>
+                      <div className={`p-2 rounded-lg ${activity.type === 'completed' ? 'bg-green-100 text-green-600' :
+                          activity.type === 'in_progress' ? 'bg-blue-100 text-blue-600' :
+                            activity.type === 'accepted' ? 'bg-purple-100 text-purple-600' :
+                              'bg-gray-100 text-gray-600'
+                        }`}>
                         {getStatusIcon(activity.type)}
                       </div>
                     </div>
@@ -505,7 +503,7 @@ const MobileDashboard = () => {
               </div>
               <span className="text-xs font-medium text-blue-700">New Report</span>
             </Button>
-            
+
             <Button
               variant="outline"
               className="h-20 flex flex-col items-center justify-center space-y-2 bg-gradient-to-br from-green-50 to-green-100/50 border-green-200/50 hover:bg-green-100/70 transition-all duration-200"
