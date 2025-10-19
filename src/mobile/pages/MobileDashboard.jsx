@@ -196,7 +196,7 @@ const MobileDashboard = () => {
     <div className="p-4 space-y-4 pb-20">
 
       {/* Greeting Header - Modern Redesign */}
-      <Card className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 overflow-hidden relative">
+      <Card className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
         <CardContent className="p-6 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
@@ -237,7 +237,7 @@ const MobileDashboard = () => {
 
       {/* Quick Stats - Modern Redesign */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200/50 hover:shadow-md transition-all duration-200">
+        <Card className="">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -251,21 +251,7 @@ const MobileDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-green-100/50 border-green-200/50 hover:shadow-md transition-all duration-200">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-bold text-green-700">{stats.completedToday}</div>
-                <div className="text-xs font-medium text-green-600 mt-1">Completed</div>
-              </div>
-              <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200/50 hover:shadow-md transition-all duration-200">
+        <Card className="">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -279,19 +265,6 @@ const MobileDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200/50 hover:shadow-md transition-all duration-200">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-2xl font-bold text-purple-700">{stats.totalDistance}km</div>
-                <div className="text-xs font-medium text-purple-600 mt-1">Distance Today</div>
-              </div>
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Navigation className="h-5 w-5 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Today's Schedule - Modern Redesign */}
