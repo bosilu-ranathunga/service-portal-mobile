@@ -37,14 +37,6 @@ const MobileLayout = () => {
     { path: '/profile', icon: User, label: 'Profile' }
   ];
 
-
-  const tabs = [
-    { name: "Home", icon: Home, path: "/user/" },
-    { name: "AI", icon: Home, path: "/user/guide" },
-    { name: "Bookings", icon: Home, path: "/user/bookinghistory" },
-    { name: "Profile", icon: Home, path: "/user/profile" },
-  ];
-
   const handleNavigation = (path) => {
     vibrate(50); // Haptic feedback
     navigate(path);
@@ -57,6 +49,7 @@ const MobileLayout = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+
       {/* Mobile Header */}
       <header className="bg-blue-500 text-primary-foreground px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg border-b border-primary/20">
         <div className="flex items-center space-x-3">
@@ -64,24 +57,6 @@ const MobileLayout = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="relative text-primary-foreground hover:bg-primary-foreground/20 h-10 w-10 p-0 rounded-full"
-            onClick={() => handleNavigation('/mobile/notifications')}
-          >
-            <Bell className="h-5 w-5" />
-            {unreadCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs p-0 min-w-[20px] bg-red-500 border-2 border-primary"
-              >
-                {unreadCount > 99 ? '99+' : unreadCount}
-              </Badge>
-            )}
-          </Button>
-
           {/* Menu Toggle */}
           <Button
             variant="ghost"
@@ -93,36 +68,6 @@ const MobileLayout = () => {
           </Button>
         </div>
       </header>
-
-      {/* Slide-out Menu */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setIsMenuOpen(false)}>
-          <div className="fixed right-0 top-0 h-full w-64 bg-card shadow-xl transform transition-transform duration-300 ease-in-out">
-            <div className="p-4 border-b">
-              <h2 className="text-lg font-semibold">Navigation</h2>
-            </div>
-            <nav className="p-2">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = isActivePath(item.path);
-
-                return (
-                  <Button
-                    key={item.path}
-                    variant={isActive ? "default" : "ghost"}
-                    className={`w-full justify-start mb-1 ${isActive ? ' text-primary-foreground' : ''
-                      }`}
-                    onClick={() => handleNavigation(item.path)}
-                  >
-                    <Icon className="h-5 w-5 mr-3" />
-                    {item.label}
-                  </Button>
-                );
-              })}
-            </nav>
-          </div>
-        </div>
-      )}
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto bg-gray-50">
@@ -154,6 +99,7 @@ const MobileLayout = () => {
           })}
         </div>
       </nav>
+
     </div>
   );
 };
