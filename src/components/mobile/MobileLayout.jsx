@@ -37,6 +37,14 @@ const MobileLayout = () => {
     { path: '/profile', icon: User, label: 'Profile' }
   ];
 
+
+  const tabs = [
+    { name: "Home", icon: Home, path: "/user/" },
+    { name: "AI", icon: Home, path: "/user/guide" },
+    { name: "Bookings", icon: Home, path: "/user/bookinghistory" },
+    { name: "Profile", icon: Home, path: "/user/profile" },
+  ];
+
   const handleNavigation = (path) => {
     vibrate(50); // Haptic feedback
     navigate(path);
@@ -102,7 +110,7 @@ const MobileLayout = () => {
                   <Button
                     key={item.path}
                     variant={isActive ? "default" : "ghost"}
-                    className={`w-full justify-start mb-1 ${isActive ? 'bg-primary text-primary-foreground' : ''
+                    className={`w-full justify-start mb-1 ${isActive ? ' text-primary-foreground' : ''
                       }`}
                     onClick={() => handleNavigation(item.path)}
                   >
@@ -134,15 +142,12 @@ const MobileLayout = () => {
                 variant="ghost"
                 size="sm"
                 className={`flex flex-col items-center space-y-1 py-3 px-4 h-auto min-w-0 rounded-xl transition-all duration-200 ${isActive
-                  ? 'text-primary bg-primary/10 shadow-sm'
+                  ? 'text-blue-600'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                   }`}
                 onClick={() => handleNavigation(item.path)}
               >
-                <div className={`p-1 rounded-lg transition-all duration-200 ${isActive ? 'bg-primary/20' : ''
-                  }`}>
-                  <Icon className="h-5 w-5" />
-                </div>
+                <Icon className="h-5 w-5" />
                 <span className="text-xs font-medium truncate">{item.label}</span>
               </Button>
             );
