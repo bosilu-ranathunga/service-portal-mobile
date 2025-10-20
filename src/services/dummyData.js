@@ -48,7 +48,8 @@ export const dummyTodaySchedule = [
     estimated_duration: 2,
     completed_at: '2025-10-02T09:45:00Z',
     equipment_details: 'Carrier 30GTN080 Rooftop Unit',
-    special_instructions: 'Building access requires security badge. Contact front desk upon arrival.'
+    special_instructions:
+      'Building access requires security badge. Contact front desk upon arrival.',
   },
   {
     id: 'ASG002',
@@ -67,7 +68,8 @@ export const dummyTodaySchedule = [
     estimated_duration: 3,
     started_at: '2025-10-02T11:15:00Z',
     equipment_details: 'Liebert XDC-2 Precision Cooling Unit',
-    special_instructions: 'URGENT: Hospital server room. Coordinate with IT department. Backup cooling in place.'
+    special_instructions:
+      'URGENT: Hospital server room. Coordinate with IT department. Backup cooling in place.',
   },
   {
     id: 'ASG003',
@@ -85,7 +87,8 @@ export const dummyTodaySchedule = [
     estimated_end_time: '2025-10-02T18:00:00Z',
     estimated_duration: 3,
     equipment_details: 'LED High Bay Lighting System - 24 Units',
-    special_instructions: 'School hours: Installation must be completed after 3 PM. Coordinate with facilities manager.'
+    special_instructions:
+      'School hours: Installation must be completed after 3 PM. Coordinate with facilities manager.',
   },
   {
     id: 'ASG004',
@@ -103,8 +106,9 @@ export const dummyTodaySchedule = [
     estimated_end_time: '2025-10-02T18:30:00Z',
     estimated_duration: 2,
     equipment_details: 'Atlas Copco GA55 Rotary Screw Compressor',
-    special_instructions: 'PPE required: Safety glasses, hard hat, steel-toed boots. Report to security gate first.'
-  }
+    special_instructions:
+      'PPE required: Safety glasses, hard hat, steel-toed boots. Report to security gate first.',
+  },
 ];
 
 // Recent activity dummy data
@@ -347,12 +351,12 @@ export const mockAPI = {
   updateProfile: async (profileData) => {
     await new Promise(resolve => setTimeout(resolve, 800));
     const updatedProfile = { ...dummyEngineerProfile, ...profileData };
-    
+
     // Store avatar in localStorage if provided
     if (profileData.avatar) {
       localStorage.setItem('engineer_avatar', profileData.avatar);
     }
-    
+
     return updatedProfile;
   },
 

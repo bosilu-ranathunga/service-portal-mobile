@@ -11,6 +11,7 @@ import {
   CheckCircle,
   AlertCircle,
   Battery,
+  Cpu,
   Wifi,
   WifiOff,
   Navigation,
@@ -34,6 +35,43 @@ const MobileDashboard = () => {
   });
   const [location, setLocation] = useState(null);
   const [networkStatus, setNetworkStatus] = useState(isOnline());
+
+
+  const jobs = [
+    {
+      id: "metro-1",
+      customer: "Metro Hospital",
+      department: "Facilities Management",
+      instrument: "UV-Vis Spectrophotometer",
+      jobType: "Emergency Repair",
+      dateRange: "20 Oct 2025 - 21 Oct 2025",
+      description:
+        "Critical cooling system failure in spectrophotometer affecting optical stability and performance...",
+      status: "in_progress",
+    },
+    {
+      id: "greenlab-2",
+      customer: "GreenLab Diagnostics",
+      department: "QC Department",
+      instrument: "HPLC System",
+      jobType: "Preventive Maintenance",
+      dateRange: "22 Oct 2025 - 23 Oct 2025",
+      description:
+        "Scheduled preventive maintenance to replace worn pump seals and recalibrate the detector.",
+      status: "pending",
+    },
+    {
+      id: "biohealth-3",
+      customer: "BioHealth Research Center",
+      department: "Analytical Chemistry",
+      instrument: "GC-MS Analyzer",
+      jobType: "Calibration",
+      dateRange: "24 Oct 2025 - 25 Oct 2025",
+      description:
+        "Calibration of GC-MS detector to ensure accurate mass detection and baseline stabilization.",
+      status: "completed",
+    },
+  ];
 
 
   useEffect(() => {
@@ -184,114 +222,60 @@ const MobileDashboard = () => {
       <div>
         <h3 className="text-lg font-semibold text-gray-800 mb-2">Today's Schedule</h3>
         <div className="space-y-3">
+          {jobs.map((job) => (
 
-          {/* Card 1 */}
-          <Card
-            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleCardClick({ id: 'metro-1', title: 'Metro Hospital', type: 'Emergency Repair', time: '17:00 - 20:00', location: '789 Healthcare Blvd, Medical District, TC 12347', description: 'Critical cooling system failure in server room', status: 'in_progress' })}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'metro-1', title: 'Metro Hospital', type: 'Emergency Repair', time: '17:00 - 20:00', location: '789 Healthcare Blvd, Medical District, TC 12347', description: 'Critical cooling system failure in server room', status: 'in_progress' }); }}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start">
-                <h4 className="font-semibold text-gray-800 text-base">Metro Hospital</h4>
-                <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
-                  <PlayCircle className="h-3.5 w-3.5 text-blue-600" /> In Progress
-                </span>
-              </div>
 
-              <Badge className="mt-2 bg-blue-100 text-blue-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
-                Emergency Repair
-              </Badge>
+            <Card
+              key={job.id}
+              className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
+              role="button"
+              tabIndex={0}
+              onClick={() => handleCardClick(job)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") handleCardClick(job);
+              }}
+            >
+              <CardContent className="p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-semibold text-gray-800 text-base">
+                      {job.customer}
+                    </h4>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {job.department}
+                    </p>
+                  </div>
 
-              <div className="mt-3 space-y-1 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
-                  <span>17:00 - 20:00</span>
+                  <Badge
+                    className={`mt-2 rounded-full px-2 py-0.5 text-[11px] font-medium ${job.jobType === "Emergency Repair"
+                      ? "bg-red-100 text-red-700"
+                      : job.jobType === "Calibration"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-blue-100 text-blue-700"
+                      }`}
+                  >
+                    {job.jobType}
+                  </Badge>
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-gray-500" />
-                  <span>789 Healthcare Blvd, Medical District, TC 12347</span>
+
+                <div className="mt-3 space-y-1 text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-gray-500" />
+                    <span>{job.dateRange}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Cpu className="h-4 w-4 text-gray-500" />
+                    <span>{job.instrument}</span>
+                  </div>
+
+                  <p className="mt-3 text-gray-500 text-sm leading-snug line-clamp-2">
+                    {job.description}
+                  </p>
                 </div>
-                <p className="mt-1 text-gray-500 text-sm leading-snug">
-                  Critical cooling system failure in server room
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Card 2 */}
-          <Card
-            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleCardClick({ id: 'biolab-1', title: 'BioLab Diagnostics', type: 'Calibration', time: '10:00 - 11:30', location: '45 Science Park, Colombo 07', description: 'Scheduled calibration of spectrometer unit', status: 'pending' })}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'biolab-1', title: 'BioLab Diagnostics', type: 'Calibration', time: '10:00 - 11:30', location: '45 Science Park, Colombo 07', description: 'Scheduled calibration of spectrometer unit', status: 'pending' }); }}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start">
-                <h4 className="font-semibold text-gray-800 text-base">BioLab Diagnostics</h4>
-                <span className="text-xs text-amber-600 font-medium flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5 text-amber-600" /> Pending
-                </span>
-              </div>
-
-              <Badge className="mt-2 bg-amber-100 text-amber-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
-                Calibration
-              </Badge>
-
-              <div className="mt-3 space-y-1 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
-                  <span>10:00 - 11:30</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-gray-500" />
-                  <span>45 Science Park, Colombo 07</span>
-                </div>
-                <p className="mt-1 text-gray-500 text-sm leading-snug">
-                  Scheduled calibration of spectrometer unit
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Card 3 */}
-          <Card
-            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={() => handleCardClick({ id: 'central-1', title: 'Central Research Facility', type: 'Preventive Maintenance', time: '08:00 - 10:00', location: '21 Lab Street, Galle', description: 'Completed preventive maintenance for centrifuge machine', status: 'completed' })}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'central-1', title: 'Central Research Facility', type: 'Preventive Maintenance', time: '08:00 - 10:00', location: '21 Lab Street, Galle', description: 'Completed preventive maintenance for centrifuge machine', status: 'completed' }); }}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start">
-                <h4 className="font-semibold text-gray-800 text-base">Central Research Facility</h4>
-                <span className="text-xs text-green-600 font-medium flex items-center gap-1">
-                  <CheckCircle className="h-3.5 w-3.5 text-green-600" /> Completed
-                </span>
-              </div>
-
-              <Badge className="mt-2 bg-green-100 text-green-700 rounded-full px-2 py-0.5 text-[11px] font-medium">
-                Preventive Maintenance
-              </Badge>
-
-              <div className="mt-3 space-y-1 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-gray-500" />
-                  <span>08:00 - 10:00</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-gray-500" />
-                  <span>21 Lab Street, Galle</span>
-                </div>
-                <p className="mt-1 text-gray-500 text-sm leading-snug">
-                  Completed preventive maintenance for centrifuge machine
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          ))}
 
         </div>
       </div>

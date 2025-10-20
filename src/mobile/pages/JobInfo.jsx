@@ -1,12 +1,4 @@
 import React from 'react'
-import TopNameBar from '@/components/mobile/TopNameBar'
-
-// Import shadcn/ui components
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 
 // Import icons from lucide-react
 import {
@@ -23,19 +15,30 @@ import {
     Paperclip,
     User,
     Building,
+    ArrowRight, // Added for CTA button
 } from 'lucide-react'
 
-/*
- * A helper component to display information clearly.
- * This ensures consistency and readability, which is important for
- * an older audience.
- *
- * label: The title (e.g., "Model Number")
- * value: The data (e.g., "SPEC-3000")
- * icon:  An optional icon to add clarity
+// Import shadcn/ui components
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Badge } from '@/components/ui/badge'
+
+// Import local components
+import TopNameBar from '@/components/mobile/TopNameBar'
+
+/**
+ * A helper component to display information with an optional icon.
+ * This ensures consistency and readability, similar to a native list item.
  */
 const InfoRow = ({ label, value, icon: Icon }) => (
-    <div className="flex items-start py-3">
+    <div className="flex items-start space-x-4 py-3.5">
+        {Icon && (
+            <Icon
+                className="w-5 h-5 flex-shrink-0 text-muted-foreground mt-0.5"
+                aria-hidden="true"
+            />
+        )}
         <div className="flex-1">
             <p className="text-sm text-muted-foreground">{label}</p>
             <p className="text-base font-medium">{value}</p>
@@ -43,17 +46,27 @@ const InfoRow = ({ label, value, icon: Icon }) => (
     </div>
 )
 
-/*
+/**
  * A helper component for clickable list items, like contacts or documents.
- * The visible chevron (>) clearly indicates it's interactive.
+ * The icon and chevron provide clear native-like affordances.
  */
-const ClickableRow = ({ label, description, href, icon: Icon }) => (
+const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
     <a
         href={href}
-        className="flex items-center w-full py-4 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+        target={target}
+        rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+        className="flex items-center w-full py-4 space-x-4 group"
     >
+        {Icon && (
+            <Icon
+                className="w-5 h-5 flex-shrink-0 text-muted-foreground"
+                aria-hidden="true"
+            />
+        )}
         <div className="flex-1">
-            <p className="text-base font-medium">{label}</p>
+            <p className="text-base font-medium group-hover:text-primary transition-colors">
+                {label}
+            </p>
             {description && (
                 <p className="text-sm text-muted-foreground">{description}</p>
             )}
@@ -63,7 +76,7 @@ const ClickableRow = ({ label, description, href, icon: Icon }) => (
 )
 
 export default function JobInfo() {
-    // Placeholder data based on your screenshot and request
+    // Placeholder data (same as original)
     const jobData = {
         customer: {
             name: 'University of Rajarata',
@@ -71,14 +84,17 @@ export default function JobInfo() {
             address: 'University Park, Mihintale, Anuradhapura, Sri Lanka',
             contacts: [
                 { name: 'Dr. Nimal Perera', phone: '+94 71 234 5678' },
-                { name: 'Ms. Sanduni Weerasinghe, Lab Coordinator', phone: '+94 76 543 2109' },
+                {
+                    name: 'Ms. Sanduni Weerasinghe, Lab Coordinator',
+                    phone: '+94 76 543 2109',
+                },
             ],
         },
         job: {
             type: 'Repair',
             datePeriod: 'Oct 20, 2025 - Oct 22, 2025',
             description:
-                'Spectrophotometer showing unstable readings and power fluctuation during calibration. Possible issue with the light source or internal power regulator. Detailed inspection and component replacement required.',
+                'Spectrophotometer showing unstable readings and power fluctuation...',
             otherEngineers: ['Kasun Silva', 'Tharindu Jayasuriya'],
         },
         instrument: {
@@ -106,118 +122,102 @@ export default function JobInfo() {
         ],
     }
 
+    const TABS = [
+        { value: 'overview', label: 'Overview' },
+        { value: 'instrument', label: 'Instrument' },
+        { value: 'documents', label: 'Documents' },
+    ]
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
-            {/* Mobile Header */}
+            {/* 1. STICKY HEADER */}
             <TopNameBar title="Job Information" />
 
-            {/* Main Content */}
-            {/* We use a neutral background color for the main area */}
-            {/* pb-28 gives space so content doesn't hide under the sticky footer */}
-            <main className="flex-1 overflow-auto bg-[#f3f4f6] p-4 pb-28">
-                {/* Using tabs is an excellent way to organize a lot of information
-                    without overwhelming the user.
-                */}
-                <Tabs defaultValue="overview" className="w-full">
-                    {/* Professional, mobile-friendly tab navigation */}
-                    {/* Tab Bar Navigation */}
-                    <div className="mb-4">
-                        <TabsList className="flex w-full h-16 justify-around bg-background border-b border-border">
-                            {[
-                                { value: "overview", label: "Overview" },
-                                { value: "instrument", label: "Instrument" },
-                                { value: "documents", label: "Documents" },
-                            ].map((tab) => (
-                                <TabsTrigger
-                                    key={tab.value}
-                                    value={tab.value}
-                                    aria-label={tab.label}
-                                    className={`
-          relative flex-1 text-center py-4 text-[14px] font-semibold tracking-wide uppercase
-          text-muted-foreground transition-colors duration-200
-          hover:text-foreground focus:text-foreground
-          data-[state=active]:text-primary
-          after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px]
-          after:bg-transparent data-[state=active]:after:bg-blue-500
-          transform-none active:scale-100 focus:scale-100
-          data-[state=active]:scale-100 shadow-none data-[state=active]:shadow-none
-        `}
-                                >
-                                    {tab.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-                    </div>
+            <Tabs defaultValue="overview" className="w-full flex flex-col flex-1">
+                {/* 2. STICKY TAB BAR */}
+                {/* This sits below the header and stays fixed. */}
+                <div className="bg-background border-b shadow-sm">
+                    <TabsList className="grid w-full grid-cols-3 h-14 p-0 px-2">
+                        {TABS.map((tab) => (
+                            <TabsTrigger
+                                key={tab.value}
+                                value={tab.value}
+                                className={`
+                  flex-1 text-center text-sm font-semibold text-muted-foreground
+                  data-[state=active]:text-primary
+                  relative h-full
+                  data-[state=active]:after:absolute
+                  data-[state=active]:after:bottom-0
+                  data-[state=active]:after:left-0
+                  data-[state=active]:after:right-0
+                  data-[state=active]:after:h-0.5
+                  data-[state=active]:after:bg-primary
+                  rounded-none
+                  focus-visible:ring-inset
+                `}
+                            >
+                                {tab.label}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+                </div>
 
-
-
-
+                {/* 3. SCROLLING CONTENT AREA */}
+                {/*
+         * This main area scrolls independently.
+         * - `flex-1` makes it take up remaining space.
+         * - `overflow-auto` makes *only* this part scroll.
+         * - `bg-muted` gives the "inset" app-like background.
+         * - `pb-32` adds padding to ensure content clears the sticky footer.
+         */}
+                <main className="flex-1 overflow-auto bg-muted p-4 pb-32">
                     {/*
-                     * ===================
-                     * OVERVIEW TAB
-                     * ===================
-                     * Contains the most critical "at-a-glance" info.
-                    */}
-                    <TabsContent value="overview" className="space-y-4">
-
+           * ===================
+           * OVERVIEW TAB
+           * ===================
+           */}
+                    <TabsContent value="overview" className="space-y-4 m-0">
                         {/* Job Details Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
-                                <div className="flex items-center justify-between pt-2">
+                        <Card className="rounded-xl overflow-hidden">
+                            <CardHeader className="pb-2">
+                                <div className="flex items-center justify-between">
                                     <CardTitle className="text-xl">Job Details</CardTitle>
-                                    <span className="text-sm bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-medium">
+                                    <Badge variant="secondary" className="capitalize">
                                         {jobData.job.type}
-                                    </span>
+                                    </Badge>
                                 </div>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="divide-y pt-0">
                                 <InfoRow
                                     icon={CalendarDays}
                                     label="Job Date"
                                     value={jobData.job.datePeriod}
                                 />
-                                <Separator />
                                 <InfoRow
                                     icon={Wrench}
                                     label="Instrument Name"
                                     value={jobData.instrument.name}
                                 />
-                                <Separator />
                                 <InfoRow
                                     icon={Building}
                                     label="Customer Name"
                                     value={jobData.customer.name}
                                 />
-                                <Separator />
                                 <InfoRow
                                     icon={User}
                                     label="Department"
                                     value={jobData.customer.department}
                                 />
-                                <Separator />
-                                {/* Address is a clickable link to open maps.
-                                    This is a key affordance for a PWA.
-                                */}
-                                <a
+                                {/* Fixed Google Maps URL for proper native maps intent */}
+                                <ClickableRow
+                                    icon={MapPin}
+                                    label="Address"
+                                    description={jobData.customer.address}
                                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                                         jobData.customer.address
                                     )}`}
                                     target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-start py-3 rounded-md -mx-2 px-2 hover:bg-gray-100 active:bg-gray-200"
-                                >
-                                    <div className="flex-1">
-                                        <p className="text-sm text-muted-foreground">
-                                            Address
-                                        </p>
-                                        <p className="text-base font-medium text-blue-600 underline">
-                                            {jobData.customer.address}
-                                        </p>
-                                    </div>
-                                    <ChevronRight className="w-5 h-5 self-center text-muted-foreground" />
-                                </a>
-                                <Separator />
+                                />
                                 <InfoRow
                                     icon={ListTodo}
                                     label="Job Description"
@@ -227,17 +227,15 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Contacts Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
+                        <Card className="rounded-xl overflow-hidden">
+                            <CardHeader>
                                 <CardTitle className="text-xl">Key Contacts</CardTitle>
                             </CardHeader>
-                            <CardContent className="divide-y">
-                                {/* Contact list is clearly clickable, linking to the dial pad.
-                                    This is a critical, time-saving feature for engineers.
-                                */}
+                            <CardContent className="divide-y pt-0">
                                 {jobData.customer.contacts.map((contact) => (
                                     <ClickableRow
                                         key={contact.name}
+                                        icon={Phone}
                                         label={contact.name}
                                         description={contact.phone}
                                         href={`tel:${contact.phone}`}
@@ -247,71 +245,60 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Team Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
+                        <Card className="rounded-xl">
+                            <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Assigned Team</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <InfoRow
                                     icon={Users}
                                     label="Other Engineers"
-                                    value={
-                                        jobData.job.otherEngineers.join(', ') ||
-                                        'None'
-                                    }
+                                    value={jobData.job.otherEngineers.join(', ') || 'None'}
                                 />
                             </CardContent>
                         </Card>
-
                     </TabsContent>
 
                     {/*
-                     * ===================
-                     * INSTRUMENT TAB
-                     * ===================
-                     * All info related to the equipment being serviced.
-                     * We've included service history here, as it's tied
-                     * to the instrument.
-                    */}
-                    <TabsContent value="instrument" className="space-y-4">
-
+           * ===================
+           * INSTRUMENT TAB
+           * ===================
+           */}
+                    <TabsContent value="instrument" className="space-y-4 m-0">
                         {/* Instrument Details Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
+                        <Card className="rounded-xl overflow-hidden">
+                            <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Instrument Details</CardTitle>
                             </CardHeader>
-                            <CardContent>
+                            <CardContent className="divide-y pt-0">
                                 <InfoRow
                                     icon={Wrench}
                                     label="Instrument Name"
                                     value={jobData.instrument.name}
                                 />
-                                <Separator />
-                                <InfoRow
-                                    label="Model Number"
-                                    value={jobData.instrument.model}
-                                />
-                                <Separator />
+                                <InfoRow label="Model Number" value={jobData.instrument.model} />
                                 <InfoRow
                                     label="Serial Number"
                                     value={jobData.instrument.serial}
                                 />
-                                <Separator />
                                 <InfoRow
                                     label="Instrument Type"
                                     value={jobData.instrument.type}
                                 />
-                                <Separator />
                                 <InfoRow
                                     icon={ShieldCheck}
                                     label="Warranty Status"
                                     value={
                                         <Badge
                                             variant={
-                                                jobData.instrument
-                                                    .warrantyStatus === 'Active'
-                                                    ? 'secondary' // 'secondary' is often green in shadcn themes
+                                                jobData.instrument.warrantyStatus === 'Active'
+                                                    ? 'default'
                                                     : 'outline'
+                                            }
+                                            className={
+                                                jobData.instrument.warrantyStatus === 'Active'
+                                                    ? 'bg-green-600 text-white'
+                                                    : 'border-destructive text-destructive'
                                             }
                                         >
                                             {jobData.instrument.warrantyStatus}
@@ -321,19 +308,19 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
-
-                        <Card className="rounded-md">
+                        {/* Service History Card */}
+                        <Card className="rounded-xl overflow-hidden">
                             <CardHeader>
                                 <CardTitle className="text-xl">Service History</CardTitle>
                             </CardHeader>
-                            <CardContent className="divide-y">
+                            <CardContent className="divide-y pt-0">
                                 {jobData.history.map((record) => (
                                     <ClickableRow
                                         key={record.id}
+                                        icon={History}
                                         label={record.service}
                                         description={`Date: ${record.date} | Report: ${record.id}`}
                                         href={`/fsr/${record.id}`} // Example link to the FSR
-                                        icon={History}
                                     />
                                 ))}
                             </CardContent>
@@ -341,35 +328,55 @@ export default function JobInfo() {
                     </TabsContent>
 
                     {/*
-                     * ===================
-                     * DOCUMENTS TAB
-                     * ===================
-                     * A simple list of attached files.
-                    */}
-                    <TabsContent value="documents">
-                        <Card className="rounded-md">
+           * ===================
+           * DOCUMENTS TAB
+           * ===================
+           */}
+                    <TabsContent value="documents" className="m-0">
+                        <Card className="rounded-xl overflow-hidden">
                             <CardHeader>
                                 <CardTitle className="text-xl">Attached Documents</CardTitle>
                             </CardHeader>
-                            <CardContent className="divide-y">
+                            <CardContent className="divide-y pt-0">
                                 {jobData.attachments.map((doc) => (
                                     <ClickableRow
                                         key={doc.name}
+                                        icon={Paperclip}
                                         label={doc.name}
                                         href={`/docs/${doc.name}`} // Example link to view/download
-                                        icon={Paperclip}
+                                        target="_blank"
                                     />
                                 ))}
                                 {jobData.attachments.length === 0 && (
-                                    <p className="text-muted-foreground text-center py-4">
+                                    <p className="text-muted-foreground text-center py-6">
                                         No documents attached.
                                     </p>
                                 )}
                             </CardContent>
                         </Card>
                     </TabsContent>
-                </Tabs>
-            </main>
+                </main>
+            </Tabs>
+
+            {/* 4. STICKY FOOTER (Call to Action) */}
+            {/*
+       * This is crucial for a native app feel.
+       * - `pb-[env(safe-area-inset-bottom)]` adds padding for the iPhone home bar.
+       */}
+            <footer
+                className="fixed bottom-0 left-0 right-0 bg-background border-t p-4
+                   grid grid-cols-2 gap-3
+                   pb-[calc(1rem+env(safe-area-inset-bottom))]"
+            >
+                <Button variant="outline" size="lg">
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Navigate
+                </Button>
+                <Button size="lg">
+                    Start Job
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+            </footer>
         </div>
     )
 }
