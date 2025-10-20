@@ -50,7 +50,7 @@ const InfoRow = ({ label, value, icon: Icon }) => (
 const ClickableRow = ({ label, description, href, icon: Icon }) => (
     <a
         href={href}
-        className="flex items-center w-full p-4 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors"
+        className="flex items-center w-full py-4 hover:bg-gray-100 active:bg-gray-200 transition-colors"
     >
         <div className="flex-1">
             <p className="text-base font-medium">{label}</p>
@@ -119,12 +119,41 @@ export default function JobInfo() {
                     without overwhelming the user.
                 */}
                 <Tabs defaultValue="overview" className="w-full">
-                    {/* Tab Navigation: Simple and clear text labels */}
-                    <TabsList className="grid w-full grid-cols-3 mb-4">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="instrument">Instrument</TabsTrigger>
-                        <TabsTrigger value="documents">Documents</TabsTrigger>
-                    </TabsList>
+                    {/* Professional, mobile-friendly tab navigation */}
+                    {/* Tab Bar Navigation */}
+                    <div className="mb-4">
+                        <TabsList className="flex w-full justify-around bg-background border-b border-border">
+                            {[
+                                { value: "overview", label: "Overview" },
+                                { value: "instrument", label: "Instrument" },
+                                { value: "documents", label: "Documents" },
+                            ].map((tab) => (
+                                <TabsTrigger
+                                    key={tab.value}
+                                    value={tab.value}
+                                    aria-label={tab.label}
+                                    className={`
+          relative flex-1 text-center py-4 text-[14px] font-semibold tracking-wide uppercase
+          text-muted-foreground transition-colors duration-200
+          hover:text-foreground focus:text-foreground
+          data-[state=active]:text-primary
+          after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px]
+          after:bg-transparent data-[state=active]:after:bg-blue-500
+          after:rounded-t-md
+
+          /* 🔒 Prevent scaling or transform effects */
+          transform-none active:scale-100 focus:scale-100
+          data-[state=active]:scale-100
+        `}
+                                >
+                                    {tab.label}
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </div>
+
+
+
 
                     {/*
                      * ===================
@@ -133,10 +162,11 @@ export default function JobInfo() {
                      * Contains the most critical "at-a-glance" info.
                     */}
                     <TabsContent value="overview" className="space-y-4">
+
                         {/* Job Details Card */}
                         <Card className="rounded-md">
-                            <CardHeader>
-                                <CardTitle className="pt-2">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="pt-2 text-xl">
                                     Job Details
                                 </CardTitle>
                             </CardHeader>
@@ -157,8 +187,8 @@ export default function JobInfo() {
 
                         {/* Customer & Location Card */}
                         <Card className="rounded-md">
-                            <CardHeader>
-                                <CardTitle>Customer & Location</CardTitle>
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Customer & Location</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <InfoRow
@@ -184,7 +214,6 @@ export default function JobInfo() {
                                     rel="noopener noreferrer"
                                     className="flex items-start py-3 rounded-md -mx-2 px-2 hover:bg-gray-100 active:bg-gray-200"
                                 >
-                                    <MapPin className="w-5 h-5 mr-3 mt-1 text-muted-foreground" />
                                     <div className="flex-1">
                                         <p className="text-sm text-muted-foreground">
                                             Address
@@ -198,57 +227,10 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
-                        {/* Contacts Card */}
+                        {/* Instrument Details Card */}
                         <Card className="rounded-md">
-                            <CardHeader>
-                                <CardTitle>Key Contacts</CardTitle>
-                            </CardHeader>
-                            <CardContent className="divide-y">
-                                {/* Contact list is clearly clickable, linking to the dial pad.
-                                    This is a critical, time-saving feature for engineers.
-                                */}
-                                {jobData.customer.contacts.map((contact) => (
-                                    <ClickableRow
-                                        key={contact.name}
-                                        label={contact.name}
-                                        description={contact.phone}
-                                        href={`tel:${contact.phone}`}
-                                        icon={Phone}
-                                    />
-                                ))}
-                            </CardContent>
-                        </Card>
-
-                        {/* Team Card */}
-                        <Card className="rounded-md">
-                            <CardHeader>
-                                <CardTitle>Assigned Team</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <InfoRow
-                                    icon={Users}
-                                    label="Other Engineers"
-                                    value={
-                                        jobData.job.otherEngineers.join(', ') ||
-                                        'None'
-                                    }
-                                />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    {/*
-                     * ===================
-                     * INSTRUMENT TAB
-                     * ===================
-                     * All info related to the equipment being serviced.
-                     * We've included service history here, as it's tied
-                     * to the instrument.
-                    */}
-                    <TabsContent value="instrument" className="space-y-4">
-                        <Card className="rounded-md">
-                            <CardHeader>
-                                <CardTitle>Instrument Details</CardTitle>
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Instrument Details</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <InfoRow
@@ -291,9 +273,59 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
+                        {/* Contacts Card */}
+                        <Card className="rounded-md">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Key Contacts</CardTitle>
+                            </CardHeader>
+                            <CardContent className="divide-y">
+                                {/* Contact list is clearly clickable, linking to the dial pad.
+                                    This is a critical, time-saving feature for engineers.
+                                */}
+                                {jobData.customer.contacts.map((contact) => (
+                                    <ClickableRow
+                                        key={contact.name}
+                                        label={contact.name}
+                                        description={contact.phone}
+                                        href={`tel:${contact.phone}`}
+                                    />
+                                ))}
+                            </CardContent>
+                        </Card>
+
+                        {/* Team Card */}
+                        <Card className="rounded-md">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Assigned Team</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <InfoRow
+                                    icon={Users}
+                                    label="Other Engineers"
+                                    value={
+                                        jobData.job.otherEngineers.join(', ') ||
+                                        'None'
+                                    }
+                                />
+                            </CardContent>
+                        </Card>
+
+                    </TabsContent>
+
+                    {/*
+                     * ===================
+                     * INSTRUMENT TAB
+                     * ===================
+                     * All info related to the equipment being serviced.
+                     * We've included service history here, as it's tied
+                     * to the instrument.
+                    */}
+                    <TabsContent value="instrument" className="space-y-4">
+
+
                         <Card className="rounded-md">
                             <CardHeader>
-                                <CardTitle>Service History</CardTitle>
+                                <CardTitle className="text-xl">Service History</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y">
                                 {jobData.history.map((record) => (
@@ -318,7 +350,7 @@ export default function JobInfo() {
                     <TabsContent value="documents">
                         <Card className="rounded-md">
                             <CardHeader>
-                                <CardTitle>Attached Documents</CardTitle>
+                                <CardTitle className="text-xl">Attached Documents</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y">
                                 {jobData.attachments.map((doc) => (
