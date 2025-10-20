@@ -1,357 +1,172 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Calendar,
-  MapPin,
-  Clock,
-  Search,
-  Filter,
-  Phone,
-  Navigation,
-  CheckCircle,
-  AlertCircle,
-  XCircle,
-  PlayCircle
-} from 'lucide-react';
-import { assignments } from '@/services/mobileApi';
-import { vibrate, getCurrentLocation } from '@/utils/pwaUtils';
-import { format, isToday, isTomorrow, parseISO } from 'date-fns';
+import { Calendar, Cpu } from 'lucide-react';
 
-const MobileAssignments = () => {
-  const [assignmentsList, setAssignmentsList] = useState([]);
-  const [filteredAssignments, setFilteredAssignments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [refreshing, setRefreshing] = useState(false);
+// Dummy data
+const jobs = [
+  {
+    id: "metro-1",
+    customer: "Metro Hospital",
+    department: "Facilities Management",
+    instrument: "UV-Vis Spectrophotometer",
+    jobType: "Emergency Repair",
+    dateRange: "20 Oct 2025 - 21 Oct 2025",
+    description:
+      "Critical cooling system failure in spectrophotometer affecting optical stability and performance...",
+    status: "in_progress",
+  },
+  {
+    id: "greenlab-2",
+    customer: "GreenLab Diagnostics",
+    department: "QC Department",
+    instrument: "HPLC System",
+    jobType: "Preventive Maintenance",
+    dateRange: "20 Oct 2025 - 23 Oct 2025",
+    description:
+      "Scheduled preventive maintenance to replace worn pump seals and recalibrate the detector.",
+    status: "pending",
+  },
+  {
+    id: "biohealth-3",
+    customer: "BioHealth Research Center",
+    department: "Analytical Chemistry",
+    instrument: "GC-MS Analyzer",
+    jobType: "Calibration",
+    dateRange: "24 Oct 2025 - 25 Oct 2025",
+    description:
+      "Calibration of GC-MS detector to ensure accurate mass detection and baseline stabilization.",
+    status: "completed",
+  },
+];
 
-  useEffect(() => {
-    fetchAssignments();
-  }, []);
+// --- Helper functions ---
 
-  useEffect(() => {
-    filterAssignments();
-  }, [assignmentsList, searchTerm, selectedStatus]);
+// Parse "20 Oct 2025" into Date
+const parseDate = (str) => {
+  const [day, month, year] = str.trim().split(' ');
+  return new Date(`${month} ${day}, ${year}`);
+};
 
-  const fetchAssignments = async () => {
-    try {
-      setLoading(true);
-      const data = await assignments.getAssignments();
-      setAssignmentsList(data);
-    } catch (error) {
-      console.error('Error fetching assignments:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    vibrate(50);
-    await fetchAssignments();
-    setRefreshing(false);
-  };
-
-  const filterAssignments = () => {
-    let filtered = assignmentsList;
-
-    // Filter by status
-    if (selectedStatus !== 'all') {
-      filtered = filtered.filter(assignment => assignment.status === selectedStatus);
-    }
-
-    // Filter by search term
-    if (searchTerm) {
-      filtered = filtered.filter(assignment =>
-        assignment.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        assignment.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        assignment.type?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredAssignments(filtered);
-  };
-
-  const getStatusConfig = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'pending':
-        return {
-          color: 'bg-yellow-500',
-          textColor: 'text-yellow-700',
-          bgColor: 'bg-yellow-50',
-          icon: AlertCircle,
-          label: 'Pending'
-        };
-      case 'in_progress':
-        return {
-          color: 'bg-blue-500',
-          textColor: 'text-blue-700',
-          bgColor: 'bg-blue-50',
-          icon: PlayCircle,
-          label: 'In Progress'
-        };
-      case 'completed':
-        return {
-          color: 'bg-green-500',
-          textColor: 'text-green-700',
-          bgColor: 'bg-green-50',
-          icon: CheckCircle,
-          label: 'Completed'
-        };
-      case 'cancelled':
-        return {
-          color: 'bg-red-500',
-          textColor: 'text-red-700',
-          bgColor: 'bg-red-50',
-          icon: XCircle,
-          label: 'Cancelled'
-        };
-      default:
-        return {
-          color: 'bg-gray-500',
-          textColor: 'text-gray-700',
-          bgColor: 'bg-gray-50',
-          icon: Clock,
-          label: 'Unknown'
-        };
-    }
-  };
-
-  const getPriorityColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getDateLabel = (dateStr) => {
-    const date = parseISO(dateStr);
-    if (isToday(date)) return 'Today';
-    if (isTomorrow(date)) return 'Tomorrow';
-    return format(date, 'MMM dd');
-  };
-
-  const handleAssignmentAction = async (action, assignment) => {
-    vibrate(100);
-
-    try {
-      switch (action) {
-        case 'start':
-          await assignments.startWork(assignment.id, await getCurrentLocation());
-          break;
-        case 'complete':
-          await assignments.completeWork(assignment.id, {});
-          break;
-        case 'accept':
-          await assignments.acceptAssignment(assignment.id);
-          break;
-        case 'view_details':
-          window.location.href = `/mobile/assignments/${assignment.id}`;
-          return;
-        case 'call_customer':
-          window.location.href = `tel:${assignment.customer_phone}`;
-          return;
-        case 'navigate':
-          const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(assignment.location)}`;
-          window.open(mapsUrl, '_blank');
-          return;
-        default:
-          return;
-      }
-
-      // Refresh assignments after action
-      await fetchAssignments();
-    } catch (error) {
-      console.error('Error performing assignment action:', error);
-    }
-  };
-
-  const groupAssignmentsByDate = (assignments) => {
-    const groups = {};
-    assignments.forEach(assignment => {
-      const dateKey = format(parseISO(assignment.scheduled_date), 'yyyy-MM-dd');
-      if (!groups[dateKey]) {
-        groups[dateKey] = [];
-      }
-      groups[dateKey].push(assignment);
-    });
-    return groups;
-  };
-
-  const renderAssignmentCard = (assignment) => {
-    const statusConfig = getStatusConfig(assignment.status);
-    const StatusIcon = statusConfig.icon;
-
-    return (
-      <Card key={assignment.id} className="mb-3">
-        <CardContent className="p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1">
-              <div className="flex items-center space-x-2 mb-1">
-                <h3 className="font-semibold text-lg">{assignment.customer_name}</h3>
-                <Badge className={getPriorityColor(assignment.priority)}>
-                  {assignment.priority}
-                </Badge>
-              </div>
-
-              <div className="flex items-center space-x-1 mb-2">
-                <StatusIcon className={`h-4 w-4 ${statusConfig.textColor}`} />
-                <span className={`text-sm ${statusConfig.textColor}`}>
-                  {statusConfig.label}
-                </span>
-              </div>
-
-              <Badge variant="outline" className="text-xs">
-                {assignment.type}
-              </Badge>
-            </div>
-
-            <div className={`w-3 h-3 rounded-full ${statusConfig.color}`}></div>
-          </div>
-
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-4 w-4" />
-              <span>
-                {format(parseISO(assignment.scheduled_time), 'HH:mm')} -
-                {format(parseISO(assignment.estimated_end_time || assignment.scheduled_time), 'HH:mm')}
-              </span>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <MapPin className="h-4 w-4" />
-              <span className="truncate">{assignment.location}</span>
-            </div>
-          </div>
-
-          {assignment.description && (
-            <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-              {assignment.description}
-            </p>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex space-x-2 mt-4">
-            {assignment.status === 'pending' && (
-              <>
-                <Button
-                  size="sm"
-                  onClick={() => handleAssignmentAction('accept', assignment)}
-                  className="flex-1"
-                >
-                  Accept
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleAssignmentAction('navigate', assignment)}
-                >
-                  <Navigation className="h-4 w-4" />
-                </Button>
-              </>
-            )}
-
-            {assignment.status === 'accepted' && (
-              <>
-                <Button
-                  size="sm"
-                  onClick={() => handleAssignmentAction('start', assignment)}
-                  className="flex-1"
-                >
-                  Start Work
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleAssignmentAction('navigate', assignment)}
-                >
-                  <Navigation className="h-4 w-4" />
-                </Button>
-              </>
-            )}
-
-            {assignment.status === 'in_progress' && (
-              <Button
-                size="sm"
-                onClick={() => handleAssignmentAction('complete', assignment)}
-                className="flex-1"
-              >
-                Complete
-              </Button>
-            )}
-
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => handleAssignmentAction('view_details', assignment)}
-            >
-              Details
-            </Button>
-
-            {assignment.customer_phone && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => handleAssignmentAction('call_customer', assignment)}
-              >
-                <Phone className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  };
-
-  if (loading) {
-    return (
-      <div className="p-4 space-y-4">
-        <div className="animate-pulse space-y-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-32 bg-muted rounded-lg"></div>
-          ))}
-        </div>
-      </div>
-    );
+// Get all dates between two dates (inclusive)
+const getDateRange = (start, end) => {
+  const dates = [];
+  const current = new Date(start);
+  while (current <= end) {
+    dates.push(new Date(current));
+    current.setDate(current.getDate() + 1);
   }
+  return dates;
+};
 
-  const groupedAssignments = groupAssignmentsByDate(filteredAssignments);
+// Group jobs by each date they span
+const groupJobsByDates = (jobs) => {
+  const grouped = {};
+
+  jobs.forEach((job) => {
+    const [startStr, endStr] = job.dateRange.split('-').map((s) => s.trim());
+    const startDate = parseDate(startStr);
+    const endDate = parseDate(endStr);
+
+    const dateList = getDateRange(startDate, endDate);
+    dateList.forEach((date) => {
+      const key = date.toDateString();
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(job);
+    });
+  });
+
+  // Sort by date
+  const sortedKeys = Object.keys(grouped).sort(
+    (a, b) => new Date(a) - new Date(b)
+  );
+
+  const sortedGrouped = {};
+  sortedKeys.forEach((k) => (sortedGrouped[k] = grouped[k]));
+  return sortedGrouped;
+};
+
+// Format date section headings
+const getHeadingLabel = (dateString) => {
+  const jobDate = new Date(dateString);
+  const today = new Date();
+  const diffDays = Math.floor(
+    (jobDate - new Date(today.getFullYear(), today.getMonth(), today.getDate())) /
+    (1000 * 60 * 60 * 24)
+  );
+
+  if (diffDays === 0) return "Today's Jobs";
+  if (diffDays === 1) return "Tomorrow's Jobs";
+  return jobDate.toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+};
+
+// --- Component ---
+const MobileAssignments = () => {
+  const groupedJobs = groupJobsByDates(jobs);
 
   return (
-    <div className="p-4 space-y-4 pb-20">
+    <div className="p-4 space-y-6 pb-20">
+      {Object.keys(groupedJobs).map((dateKey) => (
+        <div key={dateKey} className="space-y-3">
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1">
+            {getHeadingLabel(dateKey)}
+          </h2>
 
-      {/* Assignments List */}
-      <div className="space-y-4">
-        {Object.keys(groupedAssignments).length === 0 ? (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <Calendar className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No Assignments Found</h3>
-              <p className="text-muted-foreground">
-                {searchTerm || selectedStatus !== 'all'
-                  ? 'Try adjusting your search or filter criteria.'
-                  : 'No assignments available at the moment.'}
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          Object.entries(groupedAssignments)
-            .sort(([a], [b]) => a.localeCompare(b))
-            .map(([date, assignments]) => (
-              <div key={date}>
-                <h2 className="text-lg font-semibold mb-3 sticky top-16 bg-background py-2 z-10">
-                  {getDateLabel(date)} ({assignments.length})
-                </h2>
-                {assignments.map(renderAssignmentCard)}
-              </div>
-            ))
-        )}
-      </div>
+          {groupedJobs[dateKey].map((job) => (
+            <Card
+              key={`${job.id}-${dateKey}`}
+              className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
+              role="button"
+              tabIndex={0}
+              onClick={() => console.log('Job clicked:', job)}
+            >
+              <CardContent className="p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-semibold text-gray-800 text-base">
+                      {job.customer}
+                    </h4>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {job.department}
+                    </p>
+                  </div>
 
+                  <Badge
+                    className={`mt-2 rounded-full px-2 py-0.5 text-[11px] font-medium ${job.jobType === "Emergency Repair"
+                      ? "bg-red-100 text-red-700"
+                      : job.jobType === "Calibration"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-blue-100 text-blue-700"
+                      }`}
+                  >
+                    {job.jobType}
+                  </Badge>
+                </div>
+
+                <div className="mt-3 space-y-1 text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-gray-500" />
+                    <span>{job.dateRange}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Cpu className="h-4 w-4 text-gray-500" />
+                    <span>{job.instrument}</span>
+                  </div>
+
+                  <p className="mt-3 text-gray-500 text-sm leading-snug line-clamp-2">
+                    {job.description}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };

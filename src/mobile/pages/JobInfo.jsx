@@ -1,30 +1,9 @@
 import React from 'react'
-
-// Import icons from lucide-react
-import {
-    Phone,
-    MapPin,
-    Users,
-    Wrench,
-    ShieldCheck,
-    CalendarDays,
-    FileText,
-    ListTodo,
-    ChevronRight,
-    History,
-    Paperclip,
-    User,
-    Building,
-    ArrowRight, // Added for CTA button
-} from 'lucide-react'
-
-// Import shadcn/ui components
+import { MapPin, ChevronRight, History, Paperclip, ArrowRight, } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
-
-// Import local components
 import TopNameBar from '@/components/mobile/TopNameBar'
 
 /**
@@ -76,7 +55,7 @@ const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
 )
 
 export default function JobInfo() {
-    // Placeholder data (same as original)
+
     const jobData = {
         customer: {
             name: 'University of Rajarata',
@@ -130,6 +109,7 @@ export default function JobInfo() {
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
+
             {/* 1. STICKY HEADER */}
             <TopNameBar title="Job Information" />
 
@@ -143,19 +123,18 @@ export default function JobInfo() {
                                 key={tab.value}
                                 value={tab.value}
                                 className={`
-                  flex-1 text-center text-sm font-semibold text-muted-foreground
-                  data-[state=active]:text-primary
-                  relative h-full
-                  data-[state=active]:after:absolute
-                  data-[state=active]:after:bottom-0
-                  data-[state=active]:after:left-0
-                  data-[state=active]:after:right-0
-                  data-[state=active]:after:h-0.5
-                  data-[state=active]:after:bg-primary
-                  rounded-none
-                  focus-visible:ring-inset
-                `}
-                            >
+                                    flex-1 text-center text-sm font-semibold text-muted-foreground
+                                    data-[state=active]:text-primary
+                                    relative h-full
+                                    data-[state=active]:after:absolute
+                                    data-[state=active]:after:bottom-0
+                                    data-[state=active]:after:left-0
+                                    data-[state=active]:after:right-0
+                                    data-[state=active]:after:h-0.5
+                                    data-[state=active]:after:bg-primary
+                                    rounded-none
+                                    focus-visible:ring-inset
+                                    `}>
                                 {tab.label}
                             </TabsTrigger>
                         ))}
@@ -163,22 +142,11 @@ export default function JobInfo() {
                 </div>
 
                 {/* 3. SCROLLING CONTENT AREA */}
-                {/*
-         * This main area scrolls independently.
-         * - `flex-1` makes it take up remaining space.
-         * - `overflow-auto` makes *only* this part scroll.
-         * - `bg-muted` gives the "inset" app-like background.
-         * - `pb-32` adds padding to ensure content clears the sticky footer.
-         */}
                 <main className="flex-1 overflow-auto bg-muted p-4 pb-32">
-                    {/*
-           * ===================
-           * OVERVIEW TAB
-           * ===================
-           */}
+                    {/*OVERVIEW TAB*/}
                     <TabsContent value="overview" className="space-y-4 m-0">
                         {/* Job Details Card */}
-                        <Card className="rounded-xl overflow-hidden">
+                        <Card className="rounded-md overflow-hidden">
                             <CardHeader className="pb-2">
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-xl">Job Details</CardTitle>
@@ -189,28 +157,23 @@ export default function JobInfo() {
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
                                 <InfoRow
-                                    icon={CalendarDays}
                                     label="Job Date"
                                     value={jobData.job.datePeriod}
                                 />
                                 <InfoRow
-                                    icon={Wrench}
                                     label="Instrument Name"
                                     value={jobData.instrument.name}
                                 />
                                 <InfoRow
-                                    icon={Building}
                                     label="Customer Name"
                                     value={jobData.customer.name}
                                 />
                                 <InfoRow
-                                    icon={User}
                                     label="Department"
                                     value={jobData.customer.department}
                                 />
                                 {/* Fixed Google Maps URL for proper native maps intent */}
                                 <ClickableRow
-                                    icon={MapPin}
                                     label="Address"
                                     description={jobData.customer.address}
                                     href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -219,7 +182,6 @@ export default function JobInfo() {
                                     target="_blank"
                                 />
                                 <InfoRow
-                                    icon={ListTodo}
                                     label="Job Description"
                                     value={jobData.job.description}
                                 />
@@ -227,15 +189,14 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Contacts Card */}
-                        <Card className="rounded-xl overflow-hidden">
-                            <CardHeader>
+                        <Card className="rounded-md overflow-hidden">
+                            <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Key Contacts</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
                                 {jobData.customer.contacts.map((contact) => (
                                     <ClickableRow
                                         key={contact.name}
-                                        icon={Phone}
                                         label={contact.name}
                                         description={contact.phone}
                                         href={`tel:${contact.phone}`}
@@ -245,13 +206,12 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Team Card */}
-                        <Card className="rounded-xl">
+                        <Card className="rounded-md">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Assigned Team</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <InfoRow
-                                    icon={Users}
                                     label="Other Engineers"
                                     value={jobData.job.otherEngineers.join(', ') || 'None'}
                                 />
@@ -259,20 +219,15 @@ export default function JobInfo() {
                         </Card>
                     </TabsContent>
 
-                    {/*
-           * ===================
-           * INSTRUMENT TAB
-           * ===================
-           */}
+                    {/* INSTRUMENT TAB */}
                     <TabsContent value="instrument" className="space-y-4 m-0">
                         {/* Instrument Details Card */}
-                        <Card className="rounded-xl overflow-hidden">
+                        <Card className="rounded-md overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Instrument Details</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
                                 <InfoRow
-                                    icon={Wrench}
                                     label="Instrument Name"
                                     value={jobData.instrument.name}
                                 />
@@ -286,7 +241,6 @@ export default function JobInfo() {
                                     value={jobData.instrument.type}
                                 />
                                 <InfoRow
-                                    icon={ShieldCheck}
                                     label="Warranty Status"
                                     value={
                                         <Badge
@@ -309,15 +263,14 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Service History Card */}
-                        <Card className="rounded-xl overflow-hidden">
-                            <CardHeader>
+                        <Card className="rounded-md overflow-hidden">
+                            <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Service History</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
                                 {jobData.history.map((record) => (
                                     <ClickableRow
                                         key={record.id}
-                                        icon={History}
                                         label={record.service}
                                         description={`Date: ${record.date} | Report: ${record.id}`}
                                         href={`/fsr/${record.id}`} // Example link to the FSR
@@ -327,14 +280,10 @@ export default function JobInfo() {
                         </Card>
                     </TabsContent>
 
-                    {/*
-           * ===================
-           * DOCUMENTS TAB
-           * ===================
-           */}
+                    {/* DOCUMENTS TAB*/}
                     <TabsContent value="documents" className="m-0">
-                        <Card className="rounded-xl overflow-hidden">
-                            <CardHeader>
+                        <Card className="rounded-md overflow-hidden">
+                            <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Attached Documents</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
@@ -356,13 +305,10 @@ export default function JobInfo() {
                         </Card>
                     </TabsContent>
                 </main>
+
             </Tabs>
 
             {/* 4. STICKY FOOTER (Call to Action) */}
-            {/*
-       * This is crucial for a native app feel.
-       * - `pb-[env(safe-area-inset-bottom)]` adds padding for the iPhone home bar.
-       */}
             <footer
                 className="fixed bottom-0 left-0 right-0 bg-background border-t p-4
                    grid grid-cols-2 gap-3
@@ -377,6 +323,7 @@ export default function JobInfo() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
             </footer>
+
         </div>
     )
 }
