@@ -36,7 +36,6 @@ import {
  */
 const InfoRow = ({ label, value, icon: Icon }) => (
     <div className="flex items-start py-3">
-        {Icon && <Icon className="w-5 h-5 mr-3 mt-1 text-muted-foreground" />}
         <div className="flex-1">
             <p className="text-sm text-muted-foreground">{label}</p>
             <p className="text-base font-medium">{value}</p>
@@ -53,7 +52,6 @@ const ClickableRow = ({ label, description, href, icon: Icon }) => (
         href={href}
         className="flex items-center w-full p-4 rounded-lg hover:bg-gray-100 active:bg-gray-200 transition-colors"
     >
-        <Icon className="w-6 h-6 mr-4 text-primary" />
         <div className="flex-1">
             <p className="text-base font-medium">{label}</p>
             {description && (
