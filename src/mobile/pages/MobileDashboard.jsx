@@ -143,7 +143,8 @@ const MobileDashboard = () => {
 
       {/* Quick Stats - Modern Redesign */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="">
+
+        <Card className="rounded-md">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -157,7 +158,7 @@ const MobileDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="">
+        <Card className="rounded-md">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
