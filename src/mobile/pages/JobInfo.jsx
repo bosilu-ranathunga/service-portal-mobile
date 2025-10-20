@@ -176,19 +176,11 @@ export default function JobInfo() {
                                 />
                                 <Separator />
                                 <InfoRow
-                                    icon={ListTodo}
-                                    label="Job Description"
-                                    value={jobData.job.description}
+                                    icon={Wrench}
+                                    label="Instrument Name"
+                                    value={jobData.instrument.name}
                                 />
-                            </CardContent>
-                        </Card>
-
-                        {/* Customer & Location Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
-                                <CardTitle className="text-xl">Customer & Location</CardTitle>
-                            </CardHeader>
-                            <CardContent>
+                                <Separator />
                                 <InfoRow
                                     icon={Building}
                                     label="Customer Name"
@@ -222,6 +214,32 @@ export default function JobInfo() {
                                     </div>
                                     <ChevronRight className="w-5 h-5 self-center text-muted-foreground" />
                                 </a>
+                                <Separator />
+                                <InfoRow
+                                    icon={ListTodo}
+                                    label="Job Description"
+                                    value={jobData.job.description}
+                                />
+                            </CardContent>
+                        </Card>
+
+                        {/* Contacts Card */}
+                        <Card className="rounded-md">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Key Contacts</CardTitle>
+                            </CardHeader>
+                            <CardContent className="divide-y">
+                                {/* Contact list is clearly clickable, linking to the dial pad.
+                                    This is a critical, time-saving feature for engineers.
+                                */}
+                                {jobData.customer.contacts.map((contact) => (
+                                    <ClickableRow
+                                        key={contact.name}
+                                        label={contact.name}
+                                        description={contact.phone}
+                                        href={`tel:${contact.phone}`}
+                                    />
+                                ))}
                             </CardContent>
                         </Card>
 
@@ -271,25 +289,7 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
-                        {/* Contacts Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
-                                <CardTitle className="text-xl">Key Contacts</CardTitle>
-                            </CardHeader>
-                            <CardContent className="divide-y">
-                                {/* Contact list is clearly clickable, linking to the dial pad.
-                                    This is a critical, time-saving feature for engineers.
-                                */}
-                                {jobData.customer.contacts.map((contact) => (
-                                    <ClickableRow
-                                        key={contact.name}
-                                        label={contact.name}
-                                        description={contact.phone}
-                                        href={`tel:${contact.phone}`}
-                                    />
-                                ))}
-                            </CardContent>
-                        </Card>
+
 
                         {/* Team Card */}
                         <Card className="rounded-md">
