@@ -120,9 +120,9 @@ export default function JobInfo() {
                 */}
                 <Tabs defaultValue="overview" className="w-full">
                     {/* Professional, mobile-friendly tab navigation */}
-                    {/* Tab Bar Navigation joined with TopNameBar */}
-                    <div className="-mx-4 -mt-4 mb-2 bg-blue-500 text-primary-foreground shadow-sm">
-                        <TabsList className="flex w-full h-14 justify-around bg-transparent border-b border-primary/20">
+                    {/* Tab Bar Navigation */}
+                    <div className="mb-4">
+                        <TabsList className="flex w-full h-16 justify-around bg-background border-b border-border">
                             {[
                                 { value: "overview", label: "Overview" },
                                 { value: "instrument", label: "Instrument" },
@@ -133,17 +133,14 @@ export default function JobInfo() {
                                     value={tab.value}
                                     aria-label={tab.label}
                                     className={`
-          relative flex-1 text-center py-3 text-[13px] font-medium tracking-wide uppercase
-          text-blue-100 transition-colors duration-200
-          hover:text-white focus:text-white
-          data-[state=active]:text-white
-          after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[3px]
-          after:bg-transparent data-[state=active]:after:bg-white
-          after:rounded-t-md
-
-          /* 🔒 Prevent scaling or transform effects */
+          relative flex-1 text-center py-4 text-[14px] font-semibold tracking-wide uppercase
+          text-muted-foreground transition-colors duration-200
+          hover:text-foreground focus:text-foreground
+          data-[state=active]:text-primary
+          after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px]
+          after:bg-transparent data-[state=active]:after:bg-blue-500
           transform-none active:scale-100 focus:scale-100
-          data-[state=active]:scale-100
+          data-[state=active]:scale-100 shadow-none data-[state=active]:shadow-none
         `}
                                 >
                                     {tab.label}
