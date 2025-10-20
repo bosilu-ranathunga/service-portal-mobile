@@ -66,45 +66,46 @@ export default function JobInfo() {
     // Placeholder data based on your screenshot and request
     const jobData = {
         customer: {
-            name: 'Metro Hospital',
-            department: 'Facilities Management',
-            address: '789 Healthcare Blvd, Medical District, TC 12347',
+            name: 'University of Rajarata',
+            department: 'Department of Agriculture',
+            address: 'University Park, Mihintale, Anuradhapura, Sri Lanka',
             contacts: [
-                { name: 'Dr. Alen Smith', phone: '123-456-7890' },
-                { name: 'Sarah Jen, Dept. Head', phone: '098-765-4321' },
+                { name: 'Dr. Nimal Perera', phone: '+94 71 234 5678' },
+                { name: 'Ms. Sanduni Weerasinghe, Lab Coordinator', phone: '+94 76 543 2109' },
             ],
         },
         job: {
-            type: 'Emergency Repair',
-            datePeriod: 'Oct 20, 2025 - Oct 21, 2025',
+            type: 'Repair',
+            datePeriod: 'Oct 20, 2025 - Oct 22, 2025',
             description:
-                'Critical cooling system failure in the main server room. The primary compressor unit appears to be offline. Urgent attention is required.',
-            otherEngineers: ['Markus Lee', 'Jane Doe'],
+                'Spectrophotometer showing unstable readings and power fluctuation during calibration. Possible issue with the light source or internal power regulator. Detailed inspection and component replacement required.',
+            otherEngineers: ['Kasun Silva', 'Tharindu Jayasuriya'],
         },
         instrument: {
-            name: 'Chiller Unit',
-            model: 'CoolMax-Pro 5000',
-            serial: 'SN-CM5000-98765',
-            type: 'HVAC',
-            warrantyStatus: 'Active', // 'Expired'
+            name: 'UV-Vis Spectrophotometer',
+            model: 'Shimadzu UV-1900',
+            serial: 'SN-UV1900-45231',
+            type: 'Analytical Instrument',
+            warrantyStatus: 'Expired',
         },
         history: [
             {
-                id: 'FSR-1023',
-                date: 'Jul 15, 2025',
-                service: 'Preventive Maintenance',
+                id: 'FSR-1178',
+                date: 'Aug 05, 2025',
+                service: 'Optical Alignment Check',
             },
             {
-                id: 'FSR-0988',
-                date: 'Jan 10, 2025',
-                service: 'Calibration Check',
+                id: 'FSR-1012',
+                date: 'Feb 10, 2025',
+                service: 'Lamp Replacement',
             },
         ],
         attachments: [
-            { name: 'Site-Access-Permit.pdf', type: 'PDF' },
-            { name: 'Original-Install-Diagram.png', type: 'Image' },
+            { name: 'Spectrophotometer-Manual.pdf', type: 'PDF' },
+            { name: 'Previous-Service-Report.jpg', type: 'Image' },
         ],
     }
+
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
