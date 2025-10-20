@@ -4,7 +4,7 @@
     "start_url": "/",
     "display": "standalone",
     "background_color": "#2b7fff",
-    "theme_color": "#2b7fff",
+    "theme_color": "#155dfc",
     "description": "A mobile portal service app.",
     "icons": [
         {

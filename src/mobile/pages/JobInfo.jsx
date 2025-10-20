@@ -136,7 +136,7 @@ export default function JobInfo() {
                     */}
                     <TabsContent value="overview" className="space-y-4">
                         {/* Job Details Card */}
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 {/* We use a Badge for Job Type, as seen in your screenshot */}
                                 <Badge
@@ -169,7 +169,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Customer & Location Card */}
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Customer & Location</CardTitle>
                             </CardHeader>
@@ -212,7 +212,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Contacts Card */}
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Key Contacts</CardTitle>
                             </CardHeader>
@@ -233,7 +233,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Team Card */}
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Assigned Team</CardTitle>
                             </CardHeader>
@@ -259,7 +259,7 @@ export default function JobInfo() {
                      * to the instrument.
                     */}
                     <TabsContent value="instrument" className="space-y-4">
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Instrument Details</CardTitle>
                             </CardHeader>
@@ -304,7 +304,7 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Service History</CardTitle>
                             </CardHeader>
@@ -329,7 +329,7 @@ export default function JobInfo() {
                      * A simple list of attached files.
                     */}
                     <TabsContent value="documents">
-                        <Card>
+                        <Card className="rounded-md">
                             <CardHeader>
                                 <CardTitle>Attached Documents</CardTitle>
                             </CardHeader>
@@ -352,20 +352,6 @@ export default function JobInfo() {
                     </TabsContent>
                 </Tabs>
             </main>
-
-            {/* Sticky Action Bar
-                This footer is fixed to the bottom, providing persistent,
-                clear actions. Text labels are crucial for usability.
-            */}
-            <footer className="sticky bottom-0 left-0 right-0 z-10 bg-white border-t p-3 shadow-inner">
-                <div className="flex items-center justify-between gap-3">
-                    {/* Example actions. These can be changed based on job status */}
-                    <Button variant="outline" className="flex-1">
-                        Add Note
-                    </Button>
-                    <Button className="flex-1">Complete Job</Button>
-                </div>
-            </footer>
         </div>
     )
 }
