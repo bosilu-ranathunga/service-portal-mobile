@@ -164,9 +164,12 @@ export default function JobInfo() {
                         {/* Job Details Card */}
                         <Card className="rounded-md">
                             <CardHeader className="pb-0">
-                                <CardTitle className="pt-2 text-xl">
-                                    Job Details
-                                </CardTitle>
+                                <div className="flex items-center justify-between pt-2">
+                                    <CardTitle className="text-xl">Job Details</CardTitle>
+                                    <span className="text-sm bg-blue-100 text-blue-600 px-3 py-1 rounded-full font-medium">
+                                        {jobData.job.type}
+                                    </span>
+                                </div>
                             </CardHeader>
                             <CardContent>
                                 <InfoRow
@@ -243,6 +246,35 @@ export default function JobInfo() {
                             </CardContent>
                         </Card>
 
+                        {/* Team Card */}
+                        <Card className="rounded-md">
+                            <CardHeader className="pb-0">
+                                <CardTitle className="text-xl">Assigned Team</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <InfoRow
+                                    icon={Users}
+                                    label="Other Engineers"
+                                    value={
+                                        jobData.job.otherEngineers.join(', ') ||
+                                        'None'
+                                    }
+                                />
+                            </CardContent>
+                        </Card>
+
+                    </TabsContent>
+
+                    {/*
+                     * ===================
+                     * INSTRUMENT TAB
+                     * ===================
+                     * All info related to the equipment being serviced.
+                     * We've included service history here, as it's tied
+                     * to the instrument.
+                    */}
+                    <TabsContent value="instrument" className="space-y-4">
+
                         {/* Instrument Details Card */}
                         <Card className="rounded-md">
                             <CardHeader className="pb-0">
@@ -288,37 +320,6 @@ export default function JobInfo() {
                                 />
                             </CardContent>
                         </Card>
-
-
-
-                        {/* Team Card */}
-                        <Card className="rounded-md">
-                            <CardHeader className="pb-0">
-                                <CardTitle className="text-xl">Assigned Team</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <InfoRow
-                                    icon={Users}
-                                    label="Other Engineers"
-                                    value={
-                                        jobData.job.otherEngineers.join(', ') ||
-                                        'None'
-                                    }
-                                />
-                            </CardContent>
-                        </Card>
-
-                    </TabsContent>
-
-                    {/*
-                     * ===================
-                     * INSTRUMENT TAB
-                     * ===================
-                     * All info related to the equipment being serviced.
-                     * We've included service history here, as it's tied
-                     * to the instrument.
-                    */}
-                    <TabsContent value="instrument" className="space-y-4">
 
 
                         <Card className="rounded-md">
