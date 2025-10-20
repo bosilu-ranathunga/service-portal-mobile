@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Calendar, MapPin, FileText, User, Bell, Menu, X } from 'lucide-react';
+import { Home, Calendar, MapPin, FileText, User, Bell, Menu, X, EllipsisVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { notifications } from '@/services/mobileApi';
@@ -57,14 +57,7 @@ const MobileLayout = () => {
 
         <div className="flex items-center space-x-3">
           {/* Menu Toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-primary-foreground hover:bg-primary-foreground/20 h-10 w-10 p-0 rounded-full"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <EllipsisVertical size={24} />
         </div>
       </header>
 
