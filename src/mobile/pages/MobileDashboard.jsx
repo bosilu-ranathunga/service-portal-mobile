@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -91,6 +92,11 @@ const MobileDashboard = () => {
     return 'Good Evening';
   };
 
+  const navigate = useNavigate();
+  const handleCardClick = (assignment) => {
+    navigate('/job', { state: { assignment } });
+  };
+
   return (
     <div className="p-4 space-y-4 pb-20">
 
@@ -180,7 +186,13 @@ const MobileDashboard = () => {
         <div className="space-y-3">
 
           {/* Card 1 */}
-          <Card className="rounded-md shadow-sm border border-gray-200 transition-all transform scale-100 hover:scale-[0.98] focus:scale-[0.98]">
+          <Card
+            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleCardClick({ id: 'metro-1', title: 'Metro Hospital', type: 'Emergency Repair', time: '17:00 - 20:00', location: '789 Healthcare Blvd, Medical District, TC 12347', description: 'Critical cooling system failure in server room', status: 'in_progress' })}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'metro-1', title: 'Metro Hospital', type: 'Emergency Repair', time: '17:00 - 20:00', location: '789 Healthcare Blvd, Medical District, TC 12347', description: 'Critical cooling system failure in server room', status: 'in_progress' }); }}
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">Metro Hospital</h4>
@@ -210,7 +222,13 @@ const MobileDashboard = () => {
           </Card>
 
           {/* Card 2 */}
-          <Card className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-all transform scale-100 hover:scale-[0.98] focus:scale-[0.98]">
+          <Card
+            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleCardClick({ id: 'biolab-1', title: 'BioLab Diagnostics', type: 'Calibration', time: '10:00 - 11:30', location: '45 Science Park, Colombo 07', description: 'Scheduled calibration of spectrometer unit', status: 'pending' })}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'biolab-1', title: 'BioLab Diagnostics', type: 'Calibration', time: '10:00 - 11:30', location: '45 Science Park, Colombo 07', description: 'Scheduled calibration of spectrometer unit', status: 'pending' }); }}
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">BioLab Diagnostics</h4>
@@ -240,7 +258,13 @@ const MobileDashboard = () => {
           </Card>
 
           {/* Card 3 */}
-          <Card className="rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-all transform scale-100 hover:scale-[0.98] focus:scale-[0.98]">
+          <Card
+            className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={() => handleCardClick({ id: 'central-1', title: 'Central Research Facility', type: 'Preventive Maintenance', time: '08:00 - 10:00', location: '21 Lab Street, Galle', description: 'Completed preventive maintenance for centrifuge machine', status: 'completed' })}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleCardClick({ id: 'central-1', title: 'Central Research Facility', type: 'Preventive Maintenance', time: '08:00 - 10:00', location: '21 Lab Street, Galle', description: 'Completed preventive maintenance for centrifuge machine', status: 'completed' }); }}
+          >
             <CardContent className="p-4">
               <div className="flex justify-between items-start">
                 <h4 className="font-semibold text-gray-800 text-base">Central Research Facility</h4>

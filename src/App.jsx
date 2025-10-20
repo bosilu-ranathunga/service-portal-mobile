@@ -10,6 +10,7 @@ import MobileAssignments from './mobile/pages/MobileAssignments.jsx';
 import MobileFieldService from './mobile/pages/MobileFieldService.jsx';
 import MobileNotifications from './mobile/pages/MobileNotifications.jsx';
 import MobileProfile from './mobile/pages/MobileProfile.jsx';
+import JobInfo from './mobile/pages/JobInfo.jsx';
 
 
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="notifications" element={<MobileNotifications />} />
           <Route path="profile" element={<MobileProfile />} />
         </Route>
+        <Route path="job" element={<JobInfo />} />
       </Routes>
     </Router>
   );
