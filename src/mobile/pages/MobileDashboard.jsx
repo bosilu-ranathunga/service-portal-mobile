@@ -119,7 +119,7 @@ const MobileDashboard = () => {
 
           {/* Device Status Bar - Enhanced */}
           <div className="flex items-center flex-wrap gap-3 mt-4">
-            <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
+            <div className="flex items-center space-x-2 bg-primary-foreground/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
               {networkStatus ? (
                 <Wifi className="h-4 w-4 text-white" />
               ) : (
@@ -131,7 +131,7 @@ const MobileDashboard = () => {
             </div>
 
             {location && (
-              <div className="flex items-center space-x-2 bg-primary-foreground/10 px-3 py-1.5 rounded-full backdrop-blur-sm">
+              <div className="flex items-center space-x-2 bg-primary-foreground/20 px-3 py-1.5 rounded-full backdrop-blur-sm">
                 <Navigation className="h-4 w-4 text-purple-300" />
                 <span className="text-sm font-medium text-purple-300">GPS Active</span>
               </div>
