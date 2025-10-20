@@ -3,7 +3,7 @@ import TopNameBar from '@/components/mobile/TopNameBar'
 
 // Import shadcn/ui components
 import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -153,7 +153,7 @@ export default function JobInfo() {
                                     Job Details
                                 </CardTitle>
                             </CardHeader>
-                            <div>
+                            <CardContent>
                                 <InfoRow
                                     icon={CalendarDays}
                                     label="Job Date"
@@ -165,7 +165,7 @@ export default function JobInfo() {
                                     label="Job Description"
                                     value={jobData.job.description}
                                 />
-                            </div>
+                            </CardContent>
                         </Card>
 
                         {/* Customer & Location Card */}
@@ -173,7 +173,7 @@ export default function JobInfo() {
                             <CardHeader>
                                 <CardTitle>Customer & Location</CardTitle>
                             </CardHeader>
-                            <div>
+                            <CardContent>
                                 <InfoRow
                                     icon={Building}
                                     label="Customer Name"
@@ -208,7 +208,7 @@ export default function JobInfo() {
                                     </div>
                                     <ChevronRight className="w-5 h-5 self-center text-muted-foreground" />
                                 </a>
-                            </div>
+                            </CardContent>
                         </Card>
 
                         {/* Contacts Card */}
@@ -216,7 +216,7 @@ export default function JobInfo() {
                             <CardHeader>
                                 <CardTitle>Key Contacts</CardTitle>
                             </CardHeader>
-                            <div className="divide-y">
+                            <CardContent className="divide-y">
                                 {/* Contact list is clearly clickable, linking to the dial pad.
                                     This is a critical, time-saving feature for engineers.
                                 */}
@@ -229,7 +229,7 @@ export default function JobInfo() {
                                         icon={Phone}
                                     />
                                 ))}
-                            </div>
+                            </CardContent>
                         </Card>
 
                         {/* Team Card */}
@@ -237,7 +237,7 @@ export default function JobInfo() {
                             <CardHeader>
                                 <CardTitle>Assigned Team</CardTitle>
                             </CardHeader>
-                            <div>
+                            <CardContent>
                                 <InfoRow
                                     icon={Users}
                                     label="Other Engineers"
@@ -246,7 +246,7 @@ export default function JobInfo() {
                                         'None'
                                     }
                                 />
-                            </div>
+                            </CardContent>
                         </Card>
                     </TabsContent>
 
@@ -263,7 +263,7 @@ export default function JobInfo() {
                             <CardHeader>
                                 <CardTitle>Instrument Details</CardTitle>
                             </CardHeader>
-                            <div>
+                            <CardContent>
                                 <InfoRow
                                     icon={Wrench}
                                     label="Instrument Name"
@@ -301,14 +301,14 @@ export default function JobInfo() {
                                         </Badge>
                                     }
                                 />
-                            </div>
+                            </CardContent>
                         </Card>
 
                         <Card>
                             <CardHeader>
                                 <CardTitle>Service History</CardTitle>
                             </CardHeader>
-                            <div className="divide-y">
+                            <CardContent className="divide-y">
                                 {jobData.history.map((record) => (
                                     <ClickableRow
                                         key={record.id}
@@ -318,7 +318,7 @@ export default function JobInfo() {
                                         icon={History}
                                     />
                                 ))}
-                            </div>
+                            </CardContent>
                         </Card>
                     </TabsContent>
 
@@ -333,7 +333,7 @@ export default function JobInfo() {
                             <CardHeader>
                                 <CardTitle>Attached Documents</CardTitle>
                             </CardHeader>
-                            <div className="divide-y">
+                            <CardContent className="divide-y">
                                 {jobData.attachments.map((doc) => (
                                     <ClickableRow
                                         key={doc.name}
@@ -347,7 +347,7 @@ export default function JobInfo() {
                                         No documents attached.
                                     </p>
                                 )}
-                            </div>
+                            </CardContent>
                         </Card>
                     </TabsContent>
                 </Tabs>
