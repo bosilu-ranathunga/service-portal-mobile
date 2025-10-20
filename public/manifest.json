@@ -3,7 +3,7 @@
     "short_name": "Portal",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#2b7fff",
+    "background_color": "#155dfc",
     "theme_color": "#155dfc",
     "description": "A mobile portal service app.",
     "icons": [

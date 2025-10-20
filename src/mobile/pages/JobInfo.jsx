@@ -138,17 +138,6 @@ export default function JobInfo() {
                         {/* Job Details Card */}
                         <Card className="rounded-md">
                             <CardHeader>
-                                {/* We use a Badge for Job Type, as seen in your screenshot */}
-                                <Badge
-                                    className="w-fit"
-                                    variant={
-                                        jobData.job.type === 'Emergency Repair'
-                                            ? 'destructive'
-                                            : 'default'
-                                    }
-                                >
-                                    {jobData.job.type}
-                                </Badge>
                                 <CardTitle className="pt-2">
                                     Job Details
                                 </CardTitle>
