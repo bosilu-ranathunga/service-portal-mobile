@@ -276,7 +276,6 @@ const MobileDashboard = () => {
               </CardContent>
             </Card>
           ))}
-
         </div>
       </div>
 
