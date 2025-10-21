@@ -84,7 +84,7 @@ export default function FsrSubmitForm() {
                 {/* STEP 1 - Select Job */}
                 {step === 1 && (
                     <div className="space-y-4">
-                        <div>
+                        <div className="mb-5 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
                             <p className="text-gray-500 text-sm mb-4">
                                 Please select the job related to this FSR submission.
@@ -111,7 +111,7 @@ export default function FsrSubmitForm() {
                 {/* STEP 2 - Select Engineers */}
                 {step === 2 && (
                     <div className="space-y-4">
-                        <div>
+                        <div className="mb-5 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
                             <p className="text-gray-500 text-sm mb-4">
                                 Please select the job related to this FSR submission.
@@ -120,7 +120,7 @@ export default function FsrSubmitForm() {
                         {engineers.map((eng) => (
                             <label
                                 key={eng.id}
-                                className="flex items-center space-x-3 border p-3 rounded-md cursor-pointer bg-white hover:bg-white transition"
+                                className="flex items-center space-x-3 border p-3 rounded-md cursor-pointer bg-white hover:bg-gray-50 transition"
                             >
                                 <input
                                     type="checkbox"
@@ -136,32 +136,34 @@ export default function FsrSubmitForm() {
 
                 {/* STEP 3 - Documentation */}
                 {step === 3 && (
-                    <Card className="shadow-md">
-                        <CardHeader>
-                            <CardTitle>Documentation</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <Label htmlFor="fsrNumber">FSR Number</Label>
-                                <Input
-                                    id="fsrNumber"
-                                    value={fsrNumber}
-                                    onChange={(e) => setFsrNumber(e.target.value)}
-                                    placeholder="Enter FSR number"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="remarks">Remarks</Label>
-                                <textarea
-                                    id="remarks"
-                                    value={remarks}
-                                    onChange={(e) => setRemarks(e.target.value)}
-                                    placeholder="Add notes or details..."
-                                    className="w-full border rounded-md p-2 h-24 resize-none focus:outline-blue-500"
-                                />
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <div className="space-y-4">
+                        <div className="mb-5 mt-3">
+                            <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
+                            <p className="text-gray-500 text-sm mb-4">
+                                Please select the job related to this FSR submission.
+                            </p>
+                        </div>
+                        <div>
+                            <Label htmlFor="fsrNumber">FSR Number</Label>
+                            <Input
+                                id="fsrNumber"
+                                value={fsrNumber}
+                                onChange={(e) => setFsrNumber(e.target.value)}
+                                placeholder="Enter FSR number"
+                                className="w-full border rounded-md p-2 bg-white focus:outline-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <Label htmlFor="remarks">Remarks</Label>
+                            <textarea
+                                id="remarks"
+                                value={remarks}
+                                onChange={(e) => setRemarks(e.target.value)}
+                                placeholder="Add notes or details..."
+                                className="w-full border rounded-md p-2 h-24 resize-none bg-white focus:outline-blue-500"
+                            />
+                        </div>
+                    </div>
                 )}
 
                 {/* STEP 4 - Upload Images */}
@@ -203,22 +205,11 @@ export default function FsrSubmitForm() {
 
             {/* FOOTER BUTTONS */}
             <footer className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 grid grid-cols-2 gap-3 shadow-md pb-[calc(1rem+env(safe-area-inset-bottom))]">
-                {step > 1 && (
-                    <Button
-                        variant="outline"
-                        size="lg"
-                        onClick={() => setStep(step - 1)}
-                        className="flex items-center justify-center space-x-2"
-                    >
-                        <ArrowLeft className="w-5 h-5" />
-                        <span>Back</span>
-                    </Button>
-                )}
 
                 {step < 4 && (
                     <Button
                         size="lg"
-                        className="col-span-1 flex items-center justify-center space-x-2"
+                        className="bg-blue-500 col-span-2 rounded-md flex items-center justify-center space-x-2"
                         onClick={() => setStep(step + 1)}
                         disabled={
                             (step === 1 && !selectedJob) ||
@@ -233,14 +224,13 @@ export default function FsrSubmitForm() {
                 {step === 4 && (
                     <Button
                         size="lg"
-                        className="col-span-2 flex items-center justify-center space-x-2"
+                        className="bg-blue-500 col-span-2 rounded-md flex items-center justify-center space-x-2"
                         onClick={handleSubmit}
                     >
                         <span>Submit FSR</span>
-                        <ArrowRight className="w-5 h-5" />
                     </Button>
                 )}
             </footer>
-        </div>
+        </div >
     );
 }
