@@ -141,7 +141,7 @@ const MobileDashboard = () => {
     <div className="p-4 space-y-4 pb-20">
 
       {/* Greeting Header - Modern Redesign */}
-      <Card className="bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
+      <Card className="rounded-md bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
         <CardContent className="p-6 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">

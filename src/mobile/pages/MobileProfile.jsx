@@ -6,12 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { 
-  User, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Settings, 
+import {
+  User,
+  Phone,
+  Mail,
+  MapPin,
+  Settings,
   Bell,
   Smartphone,
   LogOut,
@@ -25,12 +25,12 @@ import {
   Briefcase
 } from 'lucide-react';
 import { engineerProfile } from '@/services/mobileApi';
-import { 
-  vibrate, 
-  getBatteryInfo, 
+import {
+  vibrate,
+  getBatteryInfo,
   isPWA,
   installPWA,
-  pickPhoto 
+  pickPhoto
 } from '@/utils/pwaUtils';
 
 const MobileProfile = () => {
@@ -49,7 +49,7 @@ const MobileProfile = () => {
     rating: 0,
     avatar: null
   });
-  
+
   const [editMode, setEditMode] = useState(false);
   const [editedProfile, setEditedProfile] = useState({});
   const [loading, setLoading] = useState(true);
@@ -101,22 +101,22 @@ const MobileProfile = () => {
     try {
       vibrate(50);
       setUploadingPhoto(true);
-      
+
       const photo = await pickPhoto();
-      
+
       if (photo) {
         // Create preview URL
         const previewUrl = URL.createObjectURL(photo);
-        
+
         // Update profile with new photo
         const updatedProfile = { ...profile, avatar: previewUrl };
         setProfile(updatedProfile);
         setEditedProfile(updatedProfile);
-        
+
         // In a real app, you would upload to server here
         // For demo, we'll just store locally
         localStorage.setItem('engineer_avatar', previewUrl);
-        
+
         alert('Profile photo updated successfully!');
       }
     } catch (error) {
@@ -139,11 +139,11 @@ const MobileProfile = () => {
     try {
       setSaving(true);
       vibrate(100);
-      
+
       await engineerProfile.updateProfile(editedProfile);
       setProfile(editedProfile);
       setEditMode(false);
-      
+
       alert('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -156,7 +156,7 @@ const MobileProfile = () => {
   const handleSettingChange = (key, value) => {
     vibrate(30);
     setSettings(prev => ({ ...prev, [key]: value }));
-    
+
     // Handle specific settings
     switch (key) {
       case 'dark_mode':
@@ -216,7 +216,7 @@ const MobileProfile = () => {
   return (
     <div className="p-4 space-y-4 pb-20">
       {/* Profile Header */}
-      <Card className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+      <Card className="rounded-md bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
         <CardContent className="p-6">
           <div className="flex items-center space-x-4">
             <div className="relative">
@@ -240,54 +240,28 @@ const MobileProfile = () => {
                 )}
               </Button>
             </div>
-            
+
             <div className="flex-1">
-              <h2 className="text-xl font-semibold">{profile.name}</h2>
+              <h2 className="text-xl text-white font-semibold">{profile.name}</h2>
               <p className="text-primary-foreground/80">{profile.department}</p>
               <p className="text-sm text-primary-foreground/70">
                 ID: {profile.employee_id}
               </p>
-              
-              <div className="flex items-center space-x-4 mt-2">
-                <div className="flex items-center space-x-1">
-                  <Award className="h-4 w-4" />
-                  <span className="text-sm">{getRatingStars(profile.rating)}</span>
-                </div>
-                <Badge variant="secondary" className="text-xs">
-                  {profile.experience_years}+ years
-                </Badge>
-              </div>
+
             </div>
-            
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleEditToggle}
-              className="text-primary-foreground hover:bg-primary-foreground/20"
-            >
-              {editMode ? <X className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
-            </Button>
           </div>
         </CardContent>
       </Card>
 
       {/* Statistics */}
-      <div className="grid grid-cols-3 gap-3">
-        <Card>
+      <div className="grid grid-cols-2 gap-3">
+        <Card className="rounded-md">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-primary">{profile.total_assignments}</div>
             <div className="text-sm text-muted-foreground">Total Jobs</div>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{profile.completed_assignments}</div>
-            <div className="text-sm text-muted-foreground">Completed</div>
-          </CardContent>
-        </Card>
-        
-        <Card>
+        <Card className="rounded-md">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-600">{getCompletionRate()}%</div>
             <div className="text-sm text-muted-foreground">Success Rate</div>
@@ -296,121 +270,37 @@ const MobileProfile = () => {
       </div>
 
       {/* Contact Information */}
-      <Card>
+      <Card className="rounded-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <User className="h-5 w-5" />
-            <span>Contact Information</span>
+          <CardTitle className="flex items-center text-xl space-x-2">
+            Contact Information
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          {editMode ? (
-            <>
-              <div>
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  value={editedProfile.name || ''}
-                  onChange={(e) => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={editedProfile.email || ''}
-                  onChange={(e) => setEditedProfile(prev => ({ ...prev, email: e.target.value }))}
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  value={editedProfile.phone || ''}
-                  onChange={(e) => setEditedProfile(prev => ({ ...prev, phone: e.target.value }))}
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  value={editedProfile.address || ''}
-                  onChange={(e) => setEditedProfile(prev => ({ ...prev, address: e.target.value }))}
-                />
-              </div>
-              
-              <Button onClick={handleSave} disabled={saving} className="w-full">
-                {saving ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-muted-foreground" />
-                <span>{profile.email || 'Not provided'}</span>
-              </div>
-              
-              <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span>{profile.phone || 'Not provided'}</span>
-              </div>
-              
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-4 w-4 text-muted-foreground" />
-                <span>{profile.address || 'Not provided'}</span>
-              </div>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3">
+              <Mail className="h-4 w-4 text-muted-foreground" />
+              <span>{profile.email || 'Not provided'}</span>
             </div>
-          )}
-        </CardContent>
-      </Card>
 
-      {/* Skills & Certifications */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Award className="h-5 w-5" />
-            <span>Skills & Certifications</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label className="text-sm font-medium">Specializations</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {profile.specializations?.length > 0 ? (
-                profile.specializations.map((skill, index) => (
-                  <Badge key={index} variant="outline">{skill}</Badge>
-                ))
-              ) : (
-                <span className="text-sm text-muted-foreground">No specializations listed</span>
-              )}
+            <div className="flex items-center space-x-3">
+              <Phone className="h-4 w-4 text-muted-foreground" />
+              <span>{profile.phone || 'Not provided'}</span>
             </div>
-          </div>
-          
-          <div>
-            <Label className="text-sm font-medium">Certifications</Label>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {profile.certifications?.length > 0 ? (
-                profile.certifications.map((cert, index) => (
-                  <Badge key={index} variant="secondary">{cert}</Badge>
-                ))
-              ) : (
-                <span className="text-sm text-muted-foreground">No certifications listed</span>
-              )}
+
+            <div className="flex items-center space-x-3">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <span>{profile.address || 'Not provided'}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* App Settings */}
-      <Card>
+      <Card className="rounded-md">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Settings className="h-5 w-5" />
-            <span>App Settings</span>
+          <CardTitle className="flex items-center text-xl space-x-2">
+            App Settings
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -427,7 +317,7 @@ const MobileProfile = () => {
               onCheckedChange={(checked) => handleSettingChange('notifications_enabled', checked)}
             />
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <MapPin className="h-4 w-4" />
@@ -441,7 +331,7 @@ const MobileProfile = () => {
               onCheckedChange={(checked) => handleSettingChange('location_sharing', checked)}
             />
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Clock className="h-4 w-4" />
@@ -455,65 +345,12 @@ const MobileProfile = () => {
               onCheckedChange={(checked) => handleSettingChange('auto_sync', checked)}
             />
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Device Info */}
-      {deviceInfo && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Smartphone className="h-5 w-5" />
-              <span>Device Information</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">App Type:</span>
-              <span>{deviceInfo.isPWA ? 'PWA' : 'Browser'}</span>
-            </div>
-            
-            {deviceInfo.battery && (
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Battery:</span>
-                <span>{deviceInfo.battery.level}% {deviceInfo.battery.charging ? '⚡' : ''}</span>
-              </div>
-            )}
-            
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Platform:</span>
-              <span>{deviceInfo.platform}</span>
-            </div>
-            
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Language:</span>
-              <span>{deviceInfo.language}</span>
-            </div>
-            
-            {!deviceInfo.isPWA && (
-              <Button
-                onClick={handleInstallPWA}
-                variant="outline"
-                size="sm"
-                className="w-full mt-3"
-              >
-                Install as App
-              </Button>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Logout */}
-      <Card>
-        <CardContent className="p-4">
           <Button
             onClick={handleLogout}
-            variant="destructive"
-            className="w-full"
             size="lg"
+            className="w-full mt-6 flex items-center justify-center gap-2 text-base font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-md transition-all duration-200"
           >
-            <LogOut className="h-4 w-4 mr-2" />
+            <LogOut className="h-5 w-5" />
             Logout
           </Button>
         </CardContent>
