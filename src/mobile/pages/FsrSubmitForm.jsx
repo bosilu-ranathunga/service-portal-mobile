@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ArrowRight, ArrowLeft, Camera } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { ArrowRight, ArrowLeft, Camera, X, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,49 @@ export default function FsrSubmitForm() {
     const [fsrNumber, setFsrNumber] = useState("");
     const [remarks, setRemarks] = useState("");
     const [images, setImages] = useState([]);
+
+    const [zoomedImage, setZoomedImage] = useState(null);
+    const zoomRef = useRef(null);
+    const [scale, setScale] = useState(1);
+    const [translate, setTranslate] = useState({ x: 0, y: 0 });
+    const [touches, setTouches] = useState([]);
+
+    const handleTouchStart = (e) => {
+        if (e.touches.length === 2) {
+            const distance = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            setTouches([distance]);
+        } else if (e.touches.length === 1) {
+            setTouches([
+                { x: e.touches[0].pageX - translate.x, y: e.touches[0].pageY - translate.y },
+            ]);
+        }
+    };
+
+    const handleTouchMove = (e) => {
+        if (e.touches.length === 2 && touches.length === 1) {
+            const newDistance = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            const scaleChange = newDistance / touches[0];
+            setScale(Math.min(Math.max(1, scaleChange), 4));
+        } else if (e.touches.length === 1 && touches.length === 1 && scale > 1) {
+            const newX = e.touches[0].pageX - touches[0].x;
+            const newY = e.touches[0].pageY - touches[0].y;
+            setTranslate({ x: newX, y: newY });
+        }
+    };
+
+    const handleTouchEnd = () => {
+        if (scale <= 1.05) {
+            setScale(1);
+            setTranslate({ x: 0, y: 0 });
+        }
+        setTouches([]);
+    };
 
     const jobs = [
         { id: "J001", name: "Metro Hospital - UV Calibration" },
@@ -175,8 +218,11 @@ export default function FsrSubmitForm() {
                         <CardContent className="space-y-4">
                             <div className="flex items-center space-x-2">
                                 <Camera className="w-5 h-5 text-gray-500" />
-                                <span className="text-gray-600 text-sm">Upload from Camera or Gallery</span>
+                                <span className="text-gray-600 text-sm">
+                                    Upload from Camera or Gallery
+                                </span>
                             </div>
+
                             <Input
                                 type="file"
                                 accept="image/*"
@@ -184,23 +230,71 @@ export default function FsrSubmitForm() {
                                 multiple
                                 onChange={handleImageUpload}
                             />
-                            <div className="flex flex-wrap gap-3 mt-2">
+
+                            {/* Image Previews */}
+                            <div className="flex flex-wrap gap-3 mt-3">
                                 {images.map((file, index) => (
                                     <div
                                         key={index}
-                                        className="w-20 h-20 border rounded-xl overflow-hidden shadow-sm"
+                                        className="relative w-24 h-24 rounded-xl overflow-hidden border bg-white shadow-sm group"
                                     >
+                                        {/* Image Thumbnail */}
                                         <img
                                             src={URL.createObjectURL(file)}
                                             alt="preview"
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover cursor-pointer transition-transform duration-200 hover:scale-105"
+                                            onClick={() =>
+                                                setZoomedImage({ url: URL.createObjectURL(file), index })
+                                            }
                                         />
+
+                                        {/* DELETE BUTTON (Visible Icon) */}
+                                        <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setImages(images.filter((_, i) => i !== index));
+                                            }}
+                                            className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
+
+                            {/* Zoomed Image Lightbox */}
+                            {zoomedImage && (
+                                <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center touch-none">
+                                    {/* CLOSE BUTTON for Zoom View */}
+                                    <button
+                                        onClick={() => setZoomedImage(null)}
+                                        className="absolute top-5 right-5 bg-white/15 hover:bg-white/25 text-white p-3 rounded-full backdrop-blur-sm transition"
+                                    >
+                                        <X className="w-6 h-6" />
+                                    </button>
+
+                                    <img
+                                        ref={zoomRef}
+                                        src={zoomedImage.url}
+                                        alt="zoomed"
+                                        className="max-w-[95%] max-h-[95%] rounded-lg shadow-lg transition-transform duration-200 ease-out"
+                                        style={{
+                                            transform: `scale(${scale}) translate(${translate.x}px, ${translate.y}px)`,
+                                        }}
+                                        onTouchStart={handleTouchStart}
+                                        onTouchMove={handleTouchMove}
+                                        onTouchEnd={handleTouchEnd}
+                                    />
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
                 )}
+
+
+
+
             </div>
 
             {/* FOOTER BUTTONS */}
