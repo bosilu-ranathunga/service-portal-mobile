@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import TopNameBar from '@/components/mobile/TopNameBar'
+import { useNavigate } from 'react-router-dom';
 
 /**
  * A helper component to display information with an optional icon.
@@ -55,6 +56,8 @@ const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
 )
 
 export default function JobInfo() {
+
+    const navigate = useNavigate();
 
     const jobData = {
         customer: {
@@ -318,7 +321,7 @@ export default function JobInfo() {
                     <MapPin className="w-4 h-4 mr-2" />
                     Navigate
                 </Button>
-                <Button size="lg">
+                <Button size="lg" onClick={() => { navigate('/fsr'); }}>
                     Start Job
                     <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>

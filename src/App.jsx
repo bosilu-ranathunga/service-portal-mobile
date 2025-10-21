@@ -11,6 +11,7 @@ import MobileFieldService from './mobile/pages/MobileFieldService.jsx';
 import MobileNotifications from './mobile/pages/MobileNotifications.jsx';
 import MobileProfile from './mobile/pages/MobileProfile.jsx';
 import JobInfo from './mobile/pages/JobInfo.jsx';
+import FsrSubmitForm from './mobile/pages/FsrSubmitForm.jsx';
 
 
 
@@ -35,6 +36,9 @@ function App() {
   const [isPWA, setIsPWA] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [canInstall, setCanInstall] = useState(false);
+
+
+  /*
 
   useEffect(() => {
     // Detect if app is opened as PWA
@@ -104,7 +108,7 @@ function App() {
       </div>
     );
   }
-
+*/
   return (
 
     <Router>
@@ -120,6 +124,7 @@ function App() {
           <Route path="profile" element={<MobileProfile />} />
         </Route>
         <Route path="job" element={<JobInfo />} />
+        <Route path="fsr" element={<FsrSubmitForm />} />
       </Routes>
     </Router>
   );
