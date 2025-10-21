@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Cpu } from 'lucide-react';
+import { isPWA, vibrate } from '@/utils/pwaUtils';
 
 // Dummy data
 const jobs = [
@@ -42,13 +44,11 @@ const jobs = [
 
 // --- Helper functions ---
 
-// Parse "20 Oct 2025" into Date
 const parseDate = (str) => {
   const [day, month, year] = str.trim().split(' ');
   return new Date(`${month} ${day}, ${year}`);
 };
 
-// Get all dates between two dates (inclusive)
 const getDateRange = (start, end) => {
   const dates = [];
   const current = new Date(start);
@@ -59,16 +59,20 @@ const getDateRange = (start, end) => {
   return dates;
 };
 
-// Group jobs by each date they span
 const groupJobsByDates = (jobs) => {
   const grouped = {};
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   jobs.forEach((job) => {
     const [startStr, endStr] = job.dateRange.split('-').map((s) => s.trim());
     const startDate = parseDate(startStr);
     const endDate = parseDate(endStr);
 
-    const dateList = getDateRange(startDate, endDate);
+    if (endDate < today) return;
+
+    const actualStart = startDate < today ? today : startDate;
+    const dateList = getDateRange(actualStart, endDate);
     dateList.forEach((date) => {
       const key = date.toDateString();
       if (!grouped[key]) grouped[key] = [];
@@ -76,7 +80,6 @@ const groupJobsByDates = (jobs) => {
     });
   });
 
-  // Sort by date
   const sortedKeys = Object.keys(grouped).sort(
     (a, b) => new Date(a) - new Date(b)
   );
@@ -86,7 +89,6 @@ const groupJobsByDates = (jobs) => {
   return sortedGrouped;
 };
 
-// Format date section headings
 const getHeadingLabel = (dateString) => {
   const jobDate = new Date(dateString);
   const today = new Date();
@@ -106,7 +108,14 @@ const getHeadingLabel = (dateString) => {
 
 // --- Component ---
 const MobileAssignments = () => {
+  const navigate = useNavigate();
   const groupedJobs = groupJobsByDates(jobs);
+
+  // ✅ Navigation handler
+  const handleCardClick = (assignment) => {
+    vibrate(50);
+    navigate('/job', { state: { assignment } });
+  };
 
   return (
     <div className="p-4 space-y-6 pb-20">
@@ -122,7 +131,7 @@ const MobileAssignments = () => {
               className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
               role="button"
               tabIndex={0}
-              onClick={() => console.log('Job clicked:', job)}
+              onClick={() => handleCardClick(job)} // ✅ Now working navigation
             >
               <CardContent className="p-4">
                 <div className="flex justify-between items-start">

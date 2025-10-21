@@ -28,6 +28,7 @@ import {
 import { format } from 'date-fns';
 import avatarSrc from '../../assets/dp-1758538868983-920973171.png';
 
+
 const MobileDashboard = () => {
   const [stats, setStats] = useState({
     todayAssignments: 0,
@@ -132,6 +133,7 @@ const MobileDashboard = () => {
 
   const navigate = useNavigate();
   const handleCardClick = (assignment) => {
+    vibrate(50);
     navigate('/job', { state: { assignment } });
   };
 
