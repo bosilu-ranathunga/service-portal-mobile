@@ -210,7 +210,7 @@ export default function FsrSubmitForm() {
             <div className="flex-1 overflow-y-auto p-4 pb-32 space-y-4">
                 {/* STEP 1 - Select Job */}
                 {step === 1 && (
-                    <div className="space-y-4">
+                    <div className="space-y-4  shadow-sm bg-white border p-5 rounded-sm border-solid border-[#eee]">
                         <div className="mb-2 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Select Job</h2>
                             <p className="text-gray-500 text-sm mb-3">
@@ -226,7 +226,7 @@ export default function FsrSubmitForm() {
                                         key={job.id}
                                         type="button"
                                         onClick={() => { setSelectedJob(job.id); vibrate(10); }}
-                                        className={`w-full text-left p-4 rounded-md border transition shadow-sm hover:bg-gray-50 ${active ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white"}`}
+                                        className={`w-full text-left p-4 rounded-sm border transition hover:bg-gray-50 ${active ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white"}`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <span className="font-medium text-gray-900">{job.name}</span>
@@ -244,7 +244,7 @@ export default function FsrSubmitForm() {
 
                 {/* STEP 2 - Select Engineers */}
                 {step === 2 && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 shadow-sm bg-white border p-5 rounded-sm border-solid border-[#eee]">
                         <div className="mb-2 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Assign Engineers</h2>
                             <p className="text-gray-500 text-sm mb-3">
@@ -256,7 +256,7 @@ export default function FsrSubmitForm() {
                             {engineers.map((eng) => (
                                 <label
                                     key={eng.id}
-                                    className="flex items-center justify-between border p-3 rounded-md cursor-pointer bg-white hover:bg-gray-50 transition"
+                                    className="flex items-center justify-between border p-3 rounded-sm cursor-pointer bg-white hover:bg-gray-50 transition"
                                 >
                                     <div className="flex items-center gap-3">
                                         <Checkbox
@@ -279,7 +279,7 @@ export default function FsrSubmitForm() {
 
                 {/* STEP 3 - Upload Images */}
                 {step === 3 && (
-                    <div className="space-y-4">
+                    <div className="space-y-4 shadow-sm bg-white border p-5 rounded-sm border-solid border-[#eee]">
                         <div className="mb-2 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Attach Images</h2>
                             <p className="text-gray-500 text-sm mb-3">Upload from camera or gallery.</p>
@@ -287,7 +287,7 @@ export default function FsrSubmitForm() {
                         <div
                             onDragOver={preventDefault}
                             onDrop={handleDrop}
-                            className="border-2 border-dashed border-gray-300 rounded-md p-5 bg-white text-center hover:border-blue-400 transition"
+                            className="border-2 border-dashed border-gray-300 rounded-sm p-5 bg-white text-center hover:border-blue-400 transition"
                         >
                             <div className="flex flex-col items-center gap-2 text-gray-600">
                                 <Camera className="w-6 h-6" />
@@ -319,7 +319,7 @@ export default function FsrSubmitForm() {
 
                         {/* Image Documents List */}
                         {images.length > 0 && (
-                            <ul className="mt-1 divide-y rounded-md border bg-white">
+                            <ul className="mt-1 divide-y rounded-sm border bg-white">
                                 {images.map((file, index) => (
                                     <li key={index} className="flex items-center justify-between p-3">
                                         <button
@@ -380,7 +380,7 @@ export default function FsrSubmitForm() {
 
                 {/* STEP 4 - Details & Summary */}
                 {step === 4 && (
-                    <div className="space-y-5">
+                    <div className="space-y-5 shadow-sm bg-white border p-5 rounded-sm border-solid border-[#eee]">
                         <div className="mb-1 mt-3">
                             <h2 className="text-xl font-semibold text-gray-800">Details</h2>
                             <p className="text-gray-500 text-sm mb-3">Review the information and provide final details.</p>
@@ -404,7 +404,7 @@ export default function FsrSubmitForm() {
                             <div className="space-y-2">
                                 <Label className="text-gray-700">What are you guys doing?</Label>
                                 <div className="space-y-3">
-                                    <label className="flex items-center gap-3 p-3 border rounded-md bg-white hover:bg-gray-50 transition cursor-pointer">
+                                    <label className="flex items-center gap-3 p-3 border rounded-sm bg-white hover:bg-gray-50 transition cursor-pointer">
                                         <RadioGroup value={statusChoice} onValueChange={(v) => { setStatusChoice(v); vibrate(8); }}>
                                             <div className="flex items-center gap-3">
                                                 <RadioGroupItem id="status-inspection" value="inspection" />
@@ -437,7 +437,7 @@ export default function FsrSubmitForm() {
                         </div>
 
                         {/* Summary at the end */}
-                        <div className="space-y-3 text-sm mb-8 text-gray-700 border rounded-md p-4 bg-white">
+                        <div className="space-y-3 text-sm mb-8 text-gray-700 border rounded-sm p-4 bg-white">
                             <div className="font-semibold text-gray-900">Summary</div>
                             <div className="flex items-start justify-between gap-3">
                                 <span className="text-gray-500">Job</span>
@@ -462,7 +462,7 @@ export default function FsrSubmitForm() {
                     <Button
                         variant="outline"
                         size="lg"
-                        className="rounded-md flex items-center justify-center"
+                        className="rounded-sm flex items-center justify-center"
                         onClick={() => setStep((s) => Math.max(1, s - 1))}
                         disabled={isSubmitting}
                     >
@@ -475,7 +475,7 @@ export default function FsrSubmitForm() {
                 {step < 4 && (
                     <Button
                         size="lg"
-                        className={`${step === 1 ? "col-span-2" : "col-span-1"} bg-blue-500 rounded-md flex items-center justify-center`}
+                        className={`${step === 1 ? "col-span-2" : "col-span-1"} bg-blue-500 rounded-sm flex items-center justify-center`}
                         onClick={() => {
                             // Validate current step; show inline error, don't advance when invalid
                             if (step === 1) {
@@ -498,7 +498,7 @@ export default function FsrSubmitForm() {
                 {step === 4 && (
                     <Button
                         size="lg"
-                        className="bg-blue-500 col-span-2 rounded-md flex items-center justify-center space-x-2"
+                        className="bg-blue-500 col-span-2 rounded-sm flex items-center justify-center space-x-2"
                         onClick={() => {
                             // Validate FSR number before opening confirmation
                             if (!fsrNumber.trim()) { setFsrError(true); vibrate(12); return; }
