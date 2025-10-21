@@ -64,8 +64,8 @@ export default function FsrSubmitForm() {
                     <div key={i} className="flex-1 text-center">
                         <div
                             className={`w-8 h-8 mx-auto rounded-full text-white flex items-center justify-center mb-1 ${step === i + 1
-                                    ? "bg-blue-600 font-semibold"
-                                    : "bg-gray-300 font-normal"
+                                ? "bg-blue-600 font-semibold"
+                                : "bg-gray-300 font-normal"
                                 }`}
                         >
                             {i + 1}
@@ -83,53 +83,55 @@ export default function FsrSubmitForm() {
             <div className="flex-1 overflow-y-auto p-4 pb-32 space-y-4">
                 {/* STEP 1 - Select Job */}
                 {step === 1 && (
-                    <Card className="shadow-md">
-                        <CardHeader>
-                            <CardTitle>Select Job</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {jobs.map((job) => (
-                                <div
-                                    key={job.id}
-                                    className={`p-4 border rounded-xl cursor-pointer flex items-center justify-between transition-all duration-200 ${selectedJob === job.id
-                                            ? "border-blue-600 bg-blue-50 shadow-sm"
-                                            : "border-gray-300 hover:bg-gray-50"
-                                        }`}
-                                    onClick={() => setSelectedJob(job.id)}
-                                >
-                                    <span className="font-medium">{job.name}</span>
-                                    {selectedJob === job.id && (
-                                        <ArrowRight className="w-5 h-5 text-blue-600" />
-                                    )}
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
+                    <div className="space-y-4">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
+                            <p className="text-gray-500 text-sm mb-4">
+                                Please select the job related to this FSR submission.
+                            </p>
+                        </div>
+                        {jobs.map((job) => (
+                            <div
+                                key={job.id}
+                                className={`p-4 border rounded-md cursor-pointer flex items-center justify-between transition-all duration-200 ${selectedJob === job.id
+                                    ? "border-blue-600 bg-blue-50 shadow-sm"
+                                    : "border-gray-300 bg-white hover:bg-gray-50"
+                                    }`}
+                                onClick={() => setSelectedJob(job.id)}
+                            >
+                                <span className="font-medium">{job.name}</span>
+                                {selectedJob === job.id && (
+                                    <ArrowRight className="w-5 h-5 text-blue-600" />
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 )}
 
                 {/* STEP 2 - Select Engineers */}
                 {step === 2 && (
-                    <Card className="shadow-md">
-                        <CardHeader>
-                            <CardTitle>Select Engineers</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {engineers.map((eng) => (
-                                <label
-                                    key={eng.id}
-                                    className="flex items-center space-x-3 border p-3 rounded-xl cursor-pointer hover:bg-gray-50 transition"
-                                >
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedEngineers.includes(eng.id)}
-                                        onChange={() => handleEngineerChange(eng.id)}
-                                        className="w-5 h-5 accent-blue-600"
-                                    />
-                                    <span className="font-medium">{eng.name}</span>
-                                </label>
-                            ))}
-                        </CardContent>
-                    </Card>
+                    <div className="space-y-4">
+                        <div>
+                            <h2 className="text-xl font-semibold text-gray-800">Job Information</h2>
+                            <p className="text-gray-500 text-sm mb-4">
+                                Please select the job related to this FSR submission.
+                            </p>
+                        </div>
+                        {engineers.map((eng) => (
+                            <label
+                                key={eng.id}
+                                className="flex items-center space-x-3 border p-3 rounded-md cursor-pointer bg-white hover:bg-white transition"
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={selectedEngineers.includes(eng.id)}
+                                    onChange={() => handleEngineerChange(eng.id)}
+                                    className="w-5 h-5 accent-blue-600"
+                                />
+                                <span className="font-medium">{eng.name}</span>
+                            </label>
+                        ))}
+                    </div>
                 )}
 
                 {/* STEP 3 - Documentation */}
