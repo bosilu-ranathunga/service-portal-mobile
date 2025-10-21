@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { ArrowRight, ArrowLeft, Camera, X, Trash2, Loader2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Camera, X, Trash2, Loader2, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -186,7 +186,7 @@ export default function FsrSubmitForm() {
             <TopNameBar title="Submit FSR" />
 
             {/* Step Indicator */}
-            <div className="flex justify-between items-center px-4 py-3 bg-white shadow-sm sticky top-12 z-10">
+            <div className="flex justify-between items-center px-4 py-3 bg-white shadow-sm sticky top-16 z-40">
                 {steps.map((s, i) => (
                     <div key={i} className="flex-1 text-center">
                         <div
@@ -226,15 +226,10 @@ export default function FsrSubmitForm() {
                                         key={job.id}
                                         type="button"
                                         onClick={() => { setSelectedJob(job.id); vibrate(10); }}
-                                        className={`w-full text-left p-4 rounded-xl border transition shadow-sm hover:bg-gray-50 ${active ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white"}`}
+                                        className={`w-full text-left p-4 rounded-md border transition shadow-sm hover:bg-gray-50 ${active ? "border-blue-600 bg-blue-50" : "border-gray-200 bg-white"}`}
                                     >
                                         <div className="flex items-center justify-between">
                                             <span className="font-medium text-gray-900">{job.name}</span>
-                                            {active ? (
-                                                <span className="text-xs text-blue-700 font-semibold">Selected</span>
-                                            ) : (
-                                                <ArrowRight className="w-4 h-4 text-gray-400" />
-                                            )}
                                         </div>
                                     </button>
                                 );
@@ -242,7 +237,7 @@ export default function FsrSubmitForm() {
                         </div>
 
                         {jobError && !selectedJob && (
-                            <p className="text-xs text-amber-600">Select a job to continue.</p>
+                            <p className="text-xs text-red-600 ">Select a job to continue.</p>
                         )}
                     </div>
                 )}
@@ -265,6 +260,7 @@ export default function FsrSubmitForm() {
                                 >
                                     <div className="flex items-center gap-3">
                                         <Checkbox
+                                            className="rounded-xl h-5 w-5 border-gray-400 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500"
                                             checked={selectedEngineers.includes(eng.id)}
                                             onCheckedChange={() => handleEngineerChange(eng.id)}
                                             id={`eng-${eng.id}`}
@@ -276,7 +272,7 @@ export default function FsrSubmitForm() {
                         </div>
 
                         {engineerError && selectedEngineers.length === 0 && (
-                            <p className="text-xs text-amber-600">Select at least one engineer to continue.</p>
+                            <p className="text-xs text-red-600">Select at least one engineer to continue.</p>
                         )}
                     </div>
                 )}
@@ -291,7 +287,7 @@ export default function FsrSubmitForm() {
                         <div
                             onDragOver={preventDefault}
                             onDrop={handleDrop}
-                            className="border-2 border-dashed border-gray-300 rounded-xl p-5 bg-white text-center hover:border-blue-400 transition"
+                            className="border-2 border-dashed border-gray-300 rounded-md p-5 bg-white text-center hover:border-blue-400 transition"
                         >
                             <div className="flex flex-col items-center gap-2 text-gray-600">
                                 <Camera className="w-6 h-6" />
@@ -321,35 +317,40 @@ export default function FsrSubmitForm() {
                             </div>
                         )}
 
-                        {/* Image Previews */}
-                        <div className="grid grid-cols-3 gap-3 mt-1">
-                            {images.map((file, index) => (
-                                <div
-                                    key={index}
-                                    className="relative aspect-square rounded-xl overflow-hidden border bg-white shadow-sm group"
-                                >
-                                    <img
-                                        src={URL.createObjectURL(file)}
-                                        alt="preview"
-                                        className="w-full h-full object-cover cursor-pointer transition-transform duration-200 group-hover:scale-105"
-                                        onClick={() =>
-                                            setZoomedImage({ url: URL.createObjectURL(file), index })
-                                        }
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setImages(prev => prev.filter((_, i) => i !== index));
-                                            vibrate(10);
-                                        }}
-                                        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Image Documents List */}
+                        {images.length > 0 && (
+                            <ul className="mt-1 divide-y rounded-md border bg-white">
+                                {images.map((file, index) => (
+                                    <li key={index} className="flex items-center justify-between p-3">
+                                        <button
+                                            type="button"
+                                            className="flex items-center gap-3 text-left flex-1 min-w-0"
+                                            onClick={() => setZoomedImage({ url: URL.createObjectURL(file), index })}
+                                        >
+                                            <FileImage className="w-5 h-5 text-gray-500" />
+                                            <div className="min-w-0">
+                                                <div className="font-medium text-gray-900 truncate">
+                                                    {file.name || `Image ${index + 1}`}
+                                                </div>
+                                                <div className="text-xs text-gray-500">{((file.size || 0) / 1024).toFixed(1)} KB</div>
+                                            </div>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setImages(prev => prev.filter((_, i) => i !== index));
+                                                vibrate(10);
+                                            }}
+                                            className="ml-3 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-md transition"
+                                            aria-label="Remove image"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
 
                         {zoomedImage && (
                             <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center touch-none">
@@ -396,7 +397,7 @@ export default function FsrSubmitForm() {
                                     placeholder="Enter FSR number"
                                 />
                                 {fsrError && !fsrNumber.trim() && (
-                                    <p className="text-xs text-amber-600">FSR number is required.</p>
+                                    <p className="text-xs text-red-600">FSR number is required.</p>
                                 )}
                             </div>
                             {/* What are you guys doing? */}
@@ -422,14 +423,6 @@ export default function FsrSubmitForm() {
                                 </div>
                             </div>
 
-                            {/* Quotation required */}
-                            <div className="flex items-center justify-between p-3 border rounded-md bg-white">
-                                <div className="flex items-center gap-3">
-                                    <Checkbox id="quotation-required" checked={quotationRequired} onCheckedChange={(v) => { setQuotationRequired(!!v); vibrate(8); }} />
-                                    <Label htmlFor="quotation-required" className="cursor-pointer">Quotation required</Label>
-                                </div>
-                            </div>
-
                             <div className="space-y-1">
                                 <Label htmlFor="remarks">Remarks</Label>
                                 <Textarea
@@ -438,13 +431,13 @@ export default function FsrSubmitForm() {
                                     onChange={handleRemarksChange}
                                     placeholder="Add notes or details (optional)"
                                     ref={remarksRef}
-                                    className="resize-none"
+                                    className="h-60 resize-none"
                                 />
                             </div>
                         </div>
 
                         {/* Summary at the end */}
-                        <div className="space-y-3 text-sm mb-8 text-gray-700 border rounded-lg p-4 bg-white">
+                        <div className="space-y-3 text-sm mb-8 text-gray-700 border rounded-md p-4 bg-white">
                             <div className="font-semibold text-gray-900">Summary</div>
                             <div className="flex items-start justify-between gap-3">
                                 <span className="text-gray-500">Job</span>
@@ -458,16 +451,6 @@ export default function FsrSubmitForm() {
                                 <span className="text-gray-500">Images</span>
                                 <span className="font-medium text-right">{images.length}</span>
                             </div>
-                            {images.length > 0 && (
-                                <div className="mt-2 flex gap-2 overflow-x-auto">
-                                    {images.slice(0, 5).map((f, i) => (
-                                        <img key={i} src={URL.createObjectURL(f)} alt={`img-${i}`} className="h-12 w-12 rounded-md object-cover border" />
-                                    ))}
-                                    {images.length > 5 && (
-                                        <div className="h-12 w-12 rounded-md border bg-gray-50 flex items-center justify-center text-xs text-gray-500">+{images.length - 5}</div>
-                                    )}
-                                </div>
-                            )}
                         </div>
                     </div>
                 )}

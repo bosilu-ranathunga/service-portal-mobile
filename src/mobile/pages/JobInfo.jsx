@@ -120,7 +120,7 @@ export default function JobInfo() {
                 {/* 2. STICKY TAB BAR */}
                 {/* This sits below the header and stays fixed. */}
                 <div className="bg-background border-b shadow-sm">
-                    <TabsList className="grid w-full grid-cols-3 h-14 p-0 px-2">
+                    <TabsList className="grid w-full grid-cols-3 bg-white h-14 p-0 px-2">
                         {TABS.map((tab) => (
                             <TabsTrigger
                                 key={tab.value}
@@ -128,7 +128,7 @@ export default function JobInfo() {
                                 className={`
                                     flex-1 text-center text-sm font-semibold text-muted-foreground
                                     data-[state=active]:text-primary
-                                    relative h-full
+                                    relative h-full 
                                     data-[state=active]:after:absolute
                                     data-[state=active]:after:bottom-0
                                     data-[state=active]:after:left-0
@@ -317,11 +317,7 @@ export default function JobInfo() {
                    grid grid-cols-2 gap-3
                    pb-[calc(1rem+env(safe-area-inset-bottom))]"
             >
-                <Button variant="outline" size="lg">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    Navigate
-                </Button>
-                <Button size="lg" onClick={() => { navigate('/fsr'); }}>
+                <Button size="lg" className="bg-blue-500 col-span-2 rounded-md flex items-center justify-center space-x-2" onClick={() => { navigate('/fsr'); }}>
                     Start Job
                     <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
