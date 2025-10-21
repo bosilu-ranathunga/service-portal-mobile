@@ -13,6 +13,7 @@ import MobileProfile from './mobile/pages/MobileProfile.jsx';
 import JobInfo from './mobile/pages/JobInfo.jsx';
 import FsrSubmitForm from './mobile/pages/FsrSubmitForm.jsx';
 
+import Login from './Login';
 
 
 
@@ -125,6 +126,7 @@ function App() {
         </Route>
         <Route path="job" element={<JobInfo />} />
         <Route path="fsr" element={<FsrSubmitForm />} />
+        <Route path="login" element={<Login />} />
       </Routes>
     </Router>
   );
