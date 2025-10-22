@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { MapPin, ChevronRight, History, Paperclip, ArrowRight, Clock, Play, Square } from 'lucide-react'
+import { MapPin, ChevronRight, History, Paperclip, ArrowRight, Clock, Headset, Play, Square } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -28,6 +28,9 @@ const InfoRow = ({ label, value, icon: Icon }) => (
     </div>
 )
 
+
+
+
 /**
  * A helper component for clickable list items, like contacts or documents.
  * The icon and chevron provide clear native-like affordances.
@@ -38,6 +41,11 @@ const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : undefined}
         className="flex items-center w-full py-4 space-x-4 group"
+        onClick={() => {
+            try {
+                if (navigator?.vibrate) navigator.vibrate(50);
+            } catch (_) { }
+        }}
     >
         {Icon && (
             <Icon
@@ -61,6 +69,59 @@ export default function JobInfo() {
 
     const navigate = useNavigate();
     const { addToast } = useToast();
+    const [isHolding, setIsHolding] = useState(false);
+
+
+
+    const handleHoldStart = (e, action, inputType) => {
+        e.preventDefault();
+        const holdDuration = 1500;
+        let vibrationInterval;
+
+        setIsHolding(true);
+
+        // Start continuous vibration
+        vibrationInterval = setInterval(() => {
+            if (navigator.vibrate) navigator.vibrate(50);
+        }, 120);
+
+        const holdTimeout = setTimeout(() => {
+            setIsHolding(false);
+            clearInterval(vibrationInterval);
+
+            if (action === "start") {
+                setStartTs(Date.now());
+                setPhase("running");
+                addToast("Job timer started", "success");
+            } else if (action === "stop") {
+                setElapsedMs(Date.now() - startTs);
+                setPhase("stopped");
+                addToast("Job timer stopped", "info");
+            }
+        }, holdDuration);
+
+        const clearHold = () => {
+            clearTimeout(holdTimeout);
+            clearInterval(vibrationInterval);
+            setIsHolding(false);
+        };
+
+        const endEvent =
+            inputType === "touch"
+                ? ["touchend", "touchcancel"]
+                : ["mouseup", "mouseleave"];
+
+        endEvent.forEach((ev) => {
+            document.addEventListener(
+                ev,
+                () => {
+                    clearHold();
+                },
+                { once: true }
+            );
+        });
+    };
+
 
     const jobData = {
         customer: {
@@ -80,7 +141,10 @@ export default function JobInfo() {
             datePeriod: 'Oct 20, 2025 - Oct 22, 2025',
             description:
                 'Spectrophotometer showing unstable readings and power fluctuation...',
-            otherEngineers: ['Kasun Silva', 'Tharindu Jayasuriya'],
+            otherEngineers: [
+                { name: 'Kasun Silva', phone: '+94 71 234 5678' },
+                { name: 'Tharindu Jayasuriya', phone: '+94 77 345 6789' }
+            ]
         },
         instrument: {
             name: 'UV-Vis Spectrophotometer',
@@ -142,6 +206,7 @@ export default function JobInfo() {
         return `${h}:${m}:${s}`;
     };
 
+
     const onStart = () => {
         setStartTs(Date.now());
         setPhase('running');
@@ -179,12 +244,26 @@ export default function JobInfo() {
         <div className="min-h-screen bg-background flex flex-col">
 
             {/* 1. STICKY HEADER */}
-            <TopNameBar title="Job Information" />
+            <TopNameBar
+                title="Job Information"
+                rightIcon={<button
+                    className="text-white"
+                    onClick={() => {
+                        const jobId = jobData.history[0]?.id || 'unknown';
+                        const adminPhone = '+94762250479'; // Replace with actual admin phone number
+                        const message = `Hello Admin,\n\nPlease be informed about the job with ID: ${jobId}.`;
+                        const encodedMessage = encodeURIComponent(message);
+                        window.open(`https://wa.me/${adminPhone}?text=${encodedMessage}`, '_blank');
+                    }}
+                >
+                    <Headset />
+                </button>}
+            />
 
             <Tabs defaultValue="overview" className="w-full flex flex-col flex-1">
                 {/* 2. STICKY TAB BAR */}
                 {/* This sits below the header and stays fixed. */}
-                <div className="bg-background border-b shadow-sm">
+                <div className="bg-background border-b shadow-sm sticky top-16 z-40">
                     <TabsList className="grid w-full grid-cols-3 bg-white h-14 p-0 px-2">
                         {TABS.map((tab) => (
                             <TabsTrigger
@@ -219,13 +298,12 @@ export default function JobInfo() {
                                 <CardHeader className="pb-2">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <Clock className="w-5 h-5 text-blue-600" />
                                             <CardTitle className="text-lg">
                                                 {phase === 'running' ? 'Job in progress' : 'Job stopped'}
                                             </CardTitle>
                                         </div>
-                                        <Badge variant="secondary" className={phase === 'running' ? 'bg-green-600 text-white' : 'bg-amber-500 text-white'}>
-                                            {phase === 'running' ? 'Running' : 'Stopped'}
+                                        <Badge variant="secondary" className={'px-3 py-1 ' + (phase === 'running' ? 'bg-blue-500 text-white' : 'bg-amber-500 text-white')}>
+                                            {phase === 'running' ? 'In progress' : 'FSR Pending'}
                                         </Badge>
                                     </div>
                                 </CardHeader>
@@ -239,6 +317,7 @@ export default function JobInfo() {
                                 </CardContent>
                             </Card>
                         )}
+
                         {/* Job Details Card */}
                         <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
@@ -300,17 +379,27 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Team Card */}
-                        <Card className="rounded-sm">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Assigned Team</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <InfoRow
-                                    label="Other Engineers"
-                                    value={jobData.job.otherEngineers.join(', ') || 'None'}
-                                />
+
+                            <CardContent className="divide-y pt-0">
+                                {jobData.job.otherEngineers && jobData.job.otherEngineers.length > 0 ? (
+                                    jobData.job.otherEngineers.map((engineer) => (
+                                        <ClickableRow
+                                            key={engineer.name}
+                                            label={engineer.name}
+                                            description={engineer.phone}
+                                            href={`tel:${engineer.phone}`}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="text-sm text-muted-foreground py-2">No other engineers</div>
+                                )}
                             </CardContent>
                         </Card>
+
                     </TabsContent>
 
                     {/* INSTRUMENT TAB */}
@@ -405,58 +494,41 @@ export default function JobInfo() {
             {/* 4. STICKY FOOTER (Call to Action) */}
             <footer
                 className="fixed bottom-0 left-0 right-0 bg-background border-t p-4
-                   grid grid-cols-2 gap-3
-                   pb-[calc(1rem+env(safe-area-inset-bottom))]"
+  grid grid-cols-2 gap-3
+  pb-[calc(1rem+env(safe-area-inset-bottom))]"
             >
-                {phase === 'idle' && (
+                {/* IDLE STATE */}
+                {phase === "idle" && (
                     <Button
                         size="lg"
-                        className="bg-blue-500 col-span-2 rounded-sm flex items-center justify-center space-x-2"
-                        onClick={() => openConfirm(
-                            {
-                                type: 'info',
-                                title: 'Start Job',
-                                message: 'Are you sure you want to start this job timer?',
-                                confirmText: 'Start'
-                            },
-                            onStart
-                        )}
+                        className="bg-blue-500 col-span-2 rounded-sm flex items-center justify-center space-x-2 relative select-none"
+                        onMouseDown={(e) => handleHoldStart(e, "start", "mouse")}
+                        onTouchStart={(e) => handleHoldStart(e, "start", "touch")}
                     >
                         <Play className="w-4 h-4" />
                         <span>Start Job</span>
                     </Button>
                 )}
-                {phase === 'running' && (
+
+                {/* RUNNING STATE */}
+                {phase === "running" && (
                     <Button
                         size="lg"
-                        className="bg-red-600 col-span-2 rounded-sm flex items-center justify-center space-x-2"
-                        onClick={() => openConfirm(
-                            {
-                                type: 'warning',
-                                title: 'Stop Job',
-                                message: 'Are you sure you want to stop the timer? You can’t resume time already recorded.',
-                                confirmText: 'Stop'
-                            },
-                            onStop
-                        )}
+                        className="bg-red-600 col-span-2 rounded-sm flex items-center justify-center space-x-2 relative select-none"
+                        onMouseDown={(e) => handleHoldStart(e, "stop", "mouse")}
+                        onTouchStart={(e) => handleHoldStart(e, "stop", "touch")}
                     >
                         <Square className="w-4 h-4" />
                         <span>Stop Job</span>
                     </Button>
                 )}
-                {phase === 'stopped' && (
+
+                {/* STOPPED STATE */}
+                {phase === "stopped" && (
                     <Button
                         size="lg"
                         className="bg-green-600 col-span-2 rounded-sm flex items-center justify-center space-x-2"
-                        onClick={() => openConfirm(
-                            {
-                                type: 'info',
-                                title: 'Submit Field Service Report',
-                                message: 'Are you sure you want to submit this FSR? You can’t edit it after submission.',
-                                confirmText: 'Submit'
-                            },
-                            onSubmitFsr
-                        )}
+                        onClick={() => onSubmitFsr()}
                     >
                         <ArrowRight className="w-4 h-4" />
                         <span>Submit FSR</span>

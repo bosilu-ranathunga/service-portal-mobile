@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, EllipsisVertical } from 'lucide-react';
 
-export default function TopNameBar({ title }) {
+export default function TopNameBar({ title, rightIcon }) {
     const navigate = useNavigate();
 
     return (
@@ -14,6 +14,7 @@ export default function TopNameBar({ title }) {
 
             <div className="flex items-center space-x-3">
                 {/* Menu Toggle */}
+                {rightIcon}
                 <EllipsisVertical size={24} />
             </div>
         </header>

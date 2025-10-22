@@ -59,16 +59,16 @@ const ConfirmationDialog = ({
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}
             <div
-                className="fixed inset-0 bg-[#000000c4] transition-opacity duration-300"
+                className="fixed inset-0 bg-[#000000c4]"
                 onClick={onClose}
             ></div>
 
             {/* Dialog */}
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
-                    className={`relative transform overflow-hidden rounded-md bg-white px-6 py-6 text-left shadow-2xl transition-all duration-300 sm:my-8 sm:w-full sm:max-w-md sm:p-8 border-2`}
+                    className={`relative transform overflow-hidden rounded-md bg-white px-6 py-6 text-left shadow-2xl transition-all  sm:my-8 sm:w-full sm:max-w-md sm:p-8 border-2`}
                     style={{
-                        animation: 'slideIn 0.3s ease-out forwards'
+                        animation: 'slideIn 0.2s ease-out forwards'
                     }}
                 >
                     <div className="flex items-start space-x-4">
