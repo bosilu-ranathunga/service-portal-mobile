@@ -37,6 +37,9 @@ const MobileDashboard = () => {
   const [location, setLocation] = useState(null);
   const [networkStatus, setNetworkStatus] = useState(isOnline());
 
+  useEffect(() => {
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#2b7fff");
+  }, []);
 
   const jobs = [
     {
