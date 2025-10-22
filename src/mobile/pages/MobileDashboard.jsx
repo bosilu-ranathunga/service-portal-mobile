@@ -141,7 +141,7 @@ const MobileDashboard = () => {
     <div className="p-4 space-y-4 pb-20">
 
       {/* Greeting Header - Modern Redesign */}
-      <Card className="rounded-md bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
+      <Card className="rounded-sm bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
         <CardContent className="p-6 relative z-10">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
@@ -190,7 +190,7 @@ const MobileDashboard = () => {
       {/* Quick Stats - Modern Redesign */}
       <div className="grid grid-cols-2 gap-3">
 
-        <Card className="rounded-md">
+        <Card className="rounded-sm">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -204,7 +204,7 @@ const MobileDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="rounded-md">
+        <Card className="rounded-sm">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -229,7 +229,7 @@ const MobileDashboard = () => {
 
             <Card
               key={job.id}
-              className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
+              className="rounded-sm shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
               role="button"
               tabIndex={0}
               onClick={() => handleCardClick(job)}

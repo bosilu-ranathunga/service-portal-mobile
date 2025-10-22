@@ -1,11 +1,13 @@
-import React from 'react'
-import { MapPin, ChevronRight, History, Paperclip, ArrowRight, } from 'lucide-react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { MapPin, ChevronRight, History, Paperclip, ArrowRight, Clock, Play, Square } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import TopNameBar from '@/components/mobile/TopNameBar'
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/Toast'
+import ConfirmationDialog from '@/components/ui/ConfirmationDialog'
 
 /**
  * A helper component to display information with an optional icon.
@@ -58,6 +60,7 @@ const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
 export default function JobInfo() {
 
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     const jobData = {
         customer: {
@@ -110,6 +113,68 @@ export default function JobInfo() {
         { value: 'documents', label: 'Documents' },
     ]
 
+    // Job timer state
+    const [phase, setPhase] = useState('idle'); // idle | running | stopped
+    const [startTs, setStartTs] = useState(null); // number | null
+    const [elapsedMs, setElapsedMs] = useState(0);
+
+    // Haptic helper
+    const vibrate = (pattern = 10) => {
+        try { if (navigator?.vibrate) navigator.vibrate(pattern); } catch (_) { }
+    };
+
+    // Tick while running
+    useEffect(() => {
+        let id;
+        if (phase === 'running' && startTs) {
+            const tick = () => setElapsedMs(Date.now() - startTs);
+            tick();
+            id = setInterval(tick, 1000);
+        }
+        return () => { if (id) clearInterval(id); };
+    }, [phase, startTs]);
+
+    const formatDuration = (ms) => {
+        const total = Math.max(0, Math.floor(ms / 1000));
+        const h = String(Math.floor(total / 3600)).padStart(2, '0');
+        const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+        const s = String(total % 60).padStart(2, '0');
+        return `${h}:${m}:${s}`;
+    };
+
+    const onStart = () => {
+        setStartTs(Date.now());
+        setPhase('running');
+        addToast('Job timer started', 'success');
+        vibrate(12);
+    };
+    const onStop = () => {
+        if (phase === 'running') setElapsedMs(Date.now() - startTs);
+        setPhase('stopped');
+        addToast('Job timer stopped', 'info');
+        vibrate(12);
+    };
+    const onSubmitFsr = () => {
+        vibrate(12);
+        navigate('/fsr');
+    };
+
+    // Confirmation dialog state and handler routing
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [confirmConfig, setConfirmConfig] = useState({
+        type: 'info',
+        title: '',
+        message: '',
+        confirmText: ''
+    });
+    const confirmActionRef = useRef(() => { });
+
+    const openConfirm = (config, action) => {
+        confirmActionRef.current = action;
+        setConfirmConfig(config);
+        setConfirmOpen(true);
+    };
+
     return (
         <div className="min-h-screen bg-background flex flex-col">
 
@@ -148,8 +213,34 @@ export default function JobInfo() {
                 <main className="flex-1 overflow-auto bg-muted p-4 pb-32">
                     {/*OVERVIEW TAB*/}
                     <TabsContent value="overview" className="space-y-4 m-0">
+                        {/* Running Timer Card */}
+                        {(phase === 'running' || phase === 'stopped') && (
+                            <Card className="rounded-sm overflow-hidden border-blue-100">
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="w-5 h-5 text-blue-600" />
+                                            <CardTitle className="text-lg">
+                                                {phase === 'running' ? 'Job in progress' : 'Job stopped'}
+                                            </CardTitle>
+                                        </div>
+                                        <Badge variant="secondary" className={phase === 'running' ? 'bg-green-600 text-white' : 'bg-amber-500 text-white'}>
+                                            {phase === 'running' ? 'Running' : 'Stopped'}
+                                        </Badge>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                    <div className="text-3xl font-mono tracking-wide">
+                                        {formatDuration(elapsedMs)}
+                                    </div>
+                                    {phase === 'stopped' && (
+                                        <p className="text-sm text-muted-foreground mt-1">Final duration recorded.</p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        )}
                         {/* Job Details Card */}
-                        <Card className="rounded-md overflow-hidden">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-xl">Job Details</CardTitle>
@@ -192,7 +283,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Contacts Card */}
-                        <Card className="rounded-md overflow-hidden">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Key Contacts</CardTitle>
                             </CardHeader>
@@ -209,7 +300,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Team Card */}
-                        <Card className="rounded-md">
+                        <Card className="rounded-sm">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Assigned Team</CardTitle>
                             </CardHeader>
@@ -225,7 +316,7 @@ export default function JobInfo() {
                     {/* INSTRUMENT TAB */}
                     <TabsContent value="instrument" className="space-y-4 m-0">
                         {/* Instrument Details Card */}
-                        <Card className="rounded-md overflow-hidden">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Instrument Details</CardTitle>
                             </CardHeader>
@@ -266,7 +357,7 @@ export default function JobInfo() {
                         </Card>
 
                         {/* Service History Card */}
-                        <Card className="rounded-md overflow-hidden">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Service History</CardTitle>
                             </CardHeader>
@@ -285,7 +376,7 @@ export default function JobInfo() {
 
                     {/* DOCUMENTS TAB*/}
                     <TabsContent value="documents" className="m-0">
-                        <Card className="rounded-md overflow-hidden">
+                        <Card className="rounded-sm overflow-hidden">
                             <CardHeader className="pb-2">
                                 <CardTitle className="text-xl">Attached Documents</CardTitle>
                             </CardHeader>
@@ -317,11 +408,72 @@ export default function JobInfo() {
                    grid grid-cols-2 gap-3
                    pb-[calc(1rem+env(safe-area-inset-bottom))]"
             >
-                <Button size="lg" className="bg-blue-500 col-span-2 rounded-md flex items-center justify-center space-x-2" onClick={() => { navigate('/fsr'); }}>
-                    Start Job
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                {phase === 'idle' && (
+                    <Button
+                        size="lg"
+                        className="bg-blue-500 col-span-2 rounded-sm flex items-center justify-center space-x-2"
+                        onClick={() => openConfirm(
+                            {
+                                type: 'info',
+                                title: 'Start Job',
+                                message: 'Are you sure you want to start this job timer?',
+                                confirmText: 'Start'
+                            },
+                            onStart
+                        )}
+                    >
+                        <Play className="w-4 h-4" />
+                        <span>Start Job</span>
+                    </Button>
+                )}
+                {phase === 'running' && (
+                    <Button
+                        size="lg"
+                        className="bg-red-600 col-span-2 rounded-sm flex items-center justify-center space-x-2"
+                        onClick={() => openConfirm(
+                            {
+                                type: 'warning',
+                                title: 'Stop Job',
+                                message: 'Are you sure you want to stop the timer? You can’t resume time already recorded.',
+                                confirmText: 'Stop'
+                            },
+                            onStop
+                        )}
+                    >
+                        <Square className="w-4 h-4" />
+                        <span>Stop Job</span>
+                    </Button>
+                )}
+                {phase === 'stopped' && (
+                    <Button
+                        size="lg"
+                        className="bg-green-600 col-span-2 rounded-sm flex items-center justify-center space-x-2"
+                        onClick={() => openConfirm(
+                            {
+                                type: 'info',
+                                title: 'Submit Field Service Report',
+                                message: 'Are you sure you want to submit this FSR? You can’t edit it after submission.',
+                                confirmText: 'Submit'
+                            },
+                            onSubmitFsr
+                        )}
+                    >
+                        <ArrowRight className="w-4 h-4" />
+                        <span>Submit FSR</span>
+                    </Button>
+                )}
             </footer>
+
+            {/* Confirmation Dialog */}
+            <ConfirmationDialog
+                isOpen={confirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={() => confirmActionRef.current?.()}
+                type={confirmConfig.type}
+                title={confirmConfig.title}
+                message={confirmConfig.message}
+                confirmText={confirmConfig.confirmText}
+            />
 
         </div>
     )

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-const ConfirmationDialog = ({ 
-    isOpen, 
-    onClose, 
-    onConfirm, 
-    title = "Confirm Action", 
+const ConfirmationDialog = ({
+    isOpen,
+    onClose,
+    onConfirm,
+    title = "Confirm Action",
     message = "Are you sure you want to proceed?",
     confirmText = "Confirm",
     cancelText = "Cancel",
@@ -58,15 +58,15 @@ const ConfirmationDialog = ({
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto">
             {/* Backdrop */}
-            <div 
-                className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
+            <div
+                className="fixed inset-0 bg-[#000000c4] transition-opacity duration-300"
                 onClick={onClose}
             ></div>
-            
+
             {/* Dialog */}
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div 
-                    className={`relative transform overflow-hidden rounded-2xl bg-white px-6 py-6 text-left shadow-2xl transition-all duration-300 sm:my-8 sm:w-full sm:max-w-md sm:p-8 ${borderColor} border-2`}
+                <div
+                    className={`relative transform overflow-hidden rounded-md bg-white px-6 py-6 text-left shadow-2xl transition-all duration-300 sm:my-8 sm:w-full sm:max-w-md sm:p-8 border-2`}
                     style={{
                         animation: 'slideIn 0.3s ease-out forwards'
                     }}
@@ -76,10 +76,10 @@ const ConfirmationDialog = ({
                         <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full ${iconBg} sm:mx-0`}>
                             {icon}
                         </div>
-                        
+
                         {/* Content */}
-                        <div className="flex-1">
-                            <h3 className="text-lg font-semibold leading-6 text-gray-900 mb-2">
+                        <div className="flex-1 ml-2">
+                            <h3 className="text-lg font-semibold leading-6 text-gray-900 mb-1">
                                 {title}
                             </h3>
                             <p className="text-sm text-gray-600 leading-relaxed">
@@ -92,14 +92,14 @@ const ConfirmationDialog = ({
                     <div className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 space-y-3 space-y-reverse sm:space-y-0">
                         <button
                             type="button"
-                            className="inline-flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors sm:w-auto"
+                            className="inline-flex w-full justify-center rounded-sm border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors sm:w-auto"
                             onClick={onClose}
                         >
                             {cancelText}
                         </button>
                         <button
                             type="button"
-                            className={`inline-flex w-full justify-center rounded-lg px-4 py-2.5 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors sm:w-auto ${confirmBg}`}
+                            className={`inline-flex w-full justify-center rounded-sm px-4 py-2.5 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors sm:w-auto ${confirmBg}`}
                             onClick={() => {
                                 onConfirm();
                                 onClose();

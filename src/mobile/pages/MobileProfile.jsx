@@ -216,7 +216,7 @@ const MobileProfile = () => {
   return (
     <div className="p-4 space-y-4 pb-20">
       {/* Profile Header */}
-      <Card className="rounded-md bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
+      <Card className="rounded-sm bg-gradient-to-r from-blue-500 via-blue-500 to-blue-500 border-blue-500 overflow-hidden relative">
         <CardContent className="p-6">
           <div className="flex items-center space-x-4">
             <div className="relative">
@@ -255,13 +255,13 @@ const MobileProfile = () => {
 
       {/* Statistics */}
       <div className="grid grid-cols-2 gap-3">
-        <Card className="rounded-md">
+        <Card className="rounded-sm">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-primary">{profile.total_assignments}</div>
             <div className="text-sm text-muted-foreground">Total Jobs</div>
           </CardContent>
         </Card>
-        <Card className="rounded-md">
+        <Card className="rounded-sm">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-blue-600">{getCompletionRate()}%</div>
             <div className="text-sm text-muted-foreground">Success Rate</div>
@@ -270,7 +270,7 @@ const MobileProfile = () => {
       </div>
 
       {/* Contact Information */}
-      <Card className="rounded-md">
+      <Card className="rounded-sm">
         <CardHeader>
           <CardTitle className="flex items-center text-xl space-x-2">
             Contact Information
@@ -297,7 +297,7 @@ const MobileProfile = () => {
       </Card>
 
       {/* App Settings */}
-      <Card className="rounded-md">
+      <Card className="rounded-sm">
         <CardHeader>
           <CardTitle className="flex items-center text-xl space-x-2">
             App Settings
@@ -348,7 +348,7 @@ const MobileProfile = () => {
           <Button
             onClick={handleLogout}
             size="lg"
-            className="w-full mt-6 flex items-center justify-center gap-2 text-base font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-md transition-all duration-200"
+            className="w-full mt-6 flex items-center justify-center gap-2 text-base font-semibold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 rounded-sm transition-all duration-200"
           >
             <LogOut className="h-5 w-5" />
             Logout

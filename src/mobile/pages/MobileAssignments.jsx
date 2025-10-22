@@ -128,7 +128,7 @@ const MobileAssignments = () => {
           {groupedJobs[dateKey].map((job) => (
             <Card
               key={`${job.id}-${dateKey}`}
-              className="rounded-md shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
+              className="rounded-sm shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
               role="button"
               tabIndex={0}
               onClick={() => handleCardClick(job)} // ✅ Now working navigation
