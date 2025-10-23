@@ -2,45 +2,117 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Cpu } from 'lucide-react';
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Battery,
+  Cpu,
+  Wifi,
+  WifiOff,
+  Building2,
+  Hash,
+  Navigation,
+  PlayCircle,
+  Wrench,
+  Loader
+} from 'lucide-react';
 import { isPWA, vibrate } from '@/utils/pwaUtils';
 
 // Dummy data
 const jobs = [
   {
-    id: "metro-1",
-    customer: "Metro Hospital",
-    department: "Facilities Management",
-    instrument: "UV-Vis Spectrophotometer",
+    id: "JOB123",
+    customer: "ABC Industries",
+    department: "Mechanical",
     jobType: "Emergency Repair",
     dateRange: "20 Oct 2025 - 21 Oct 2025",
-    description:
-      "Critical cooling system failure in spectrophotometer affecting optical stability and performance...",
-    status: "in_progress",
+    instrument: "Pressure Gauge",
+    description: "Replace faulty pressure gauge and recalibrate system.",
+    location: "Client Site",
+    status: "In Progress"
   },
   {
-    id: "greenlab-2",
-    customer: "GreenLab Diagnostics",
-    department: "QC Department",
-    instrument: "HPLC System",
-    jobType: "Preventive Maintenance",
-    dateRange: "20 Oct 2025 - 23 Oct 2025",
-    description:
-      "Scheduled preventive maintenance to replace worn pump seals and recalibrate the detector.",
-    status: "pending",
+    id: "JOB124",
+    customer: "XYZ Laboratories",
+    department: "Electrical",
+    jobType: "Calibration",
+    dateRange: "22 Oct 2025 - 23 Oct 2025",
+    instrument: "Digital Multimeter",
+    description: "Perform routine calibration of digital multimeters.",
+    location: "Warehouse",
+    status: "Pending"
   },
   {
-    id: "biohealth-3",
-    customer: "BioHealth Research Center",
-    department: "Analytical Chemistry",
-    instrument: "GC-MS Analyzer",
+    id: "JOB125",
+    customer: "Global Tech",
+    department: "Electronics",
+    jobType: "Emergency Repair",
+    dateRange: "23 Oct 2025 - 24 Oct 2025",
+    instrument: "Oscilloscope",
+    description: "Fix and recalibrate the oscilloscope for testing lab.",
+    location: "Client Site",
+    status: "Pending FSR"
+  },
+  {
+    id: "JOB126",
+    customer: "Sunrise Pharma",
+    department: "Mechanical",
     jobType: "Calibration",
     dateRange: "24 Oct 2025 - 25 Oct 2025",
-    description:
-      "Calibration of GC-MS detector to ensure accurate mass detection and baseline stabilization.",
-    status: "completed",
+    instrument: "Temperature Sensor",
+    description: "Check and calibrate temperature sensors in production line.",
+    location: "Warehouse",
+    status: "Job Done"
   },
+  {
+    id: "JOB127",
+    customer: "AeroTech Solutions",
+    department: "Aerospace",
+    jobType: "Emergency Repair",
+    dateRange: "25 Oct 2025 - 26 Oct 2025",
+    instrument: "Altimeter",
+    description: "Repair altimeter and run performance tests.",
+    location: "Client Site",
+    status: "Pending"
+  },
+  {
+    id: "JOB128",
+    customer: "Quantum Labs",
+    department: "Electronics",
+    jobType: "Calibration",
+    dateRange: "26 Oct 2025 - 27 Oct 2025",
+    instrument: "Power Supply Unit",
+    description: "Routine calibration of lab power supply units.",
+    location: "Warehouse",
+    status: "Pending"
+  },
+  {
+    id: "JOB129",
+    customer: "Nova Instruments",
+    department: "Mechanical",
+    jobType: "Emergency Repair",
+    dateRange: "27 Oct 2025 - 28 Oct 2025",
+    instrument: "Hydraulic Pump",
+    description: "Emergency hydraulic pump repair and testing.",
+    location: "Client Site",
+    status: "Pending"
+  },
+  {
+    id: "JOB130",
+    customer: "Stellar Electronics",
+    department: "Electrical",
+    jobType: "Calibration",
+    dateRange: "28 Oct 2025 - 29 Oct 2025",
+    instrument: "Multimeter",
+    description: "Calibration of multimeters for quality assurance lab.",
+    location: "Warehouse",
+    status: "Pending"
+  }
 ];
+
 
 // --- Helper functions ---
 
@@ -121,19 +193,27 @@ const MobileAssignments = () => {
     <div className="p-4 space-y-6 pb-20">
       {Object.keys(groupedJobs).map((dateKey) => (
         <div key={dateKey} className="space-y-3">
-          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1">
-            {getHeadingLabel(dateKey)}
+          <h2 className="text-lg font-semibold text-gray-800 border-b pb-1 flex justify-between items-center">
+            <span>
+              {getHeadingLabel(dateKey)} ({groupedJobs[dateKey].length} Job{groupedJobs[dateKey].length > 1 ? 's' : ''})
+            </span>
+
           </h2>
+
 
           {groupedJobs[dateKey].map((job) => (
             <Card
-              key={`${job.id}-${dateKey}`}
-              className="rounded-sm shadow-sm border border-gray-200 transition-all cursor-pointer hover:shadow-md"
+              key={job.id}
+              className="rounded-sm border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer"
               role="button"
               tabIndex={0}
-              onClick={() => handleCardClick(job)} // ✅ Now working navigation
+              onClick={() => handleCardClick(job)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") handleCardClick(job);
+              }}
             >
               <CardContent className="p-4">
+                {/* === Top Row === */}
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-semibold text-gray-800 text-base">
@@ -143,34 +223,60 @@ const MobileAssignments = () => {
                       {job.department}
                     </p>
                   </div>
-
-                  <Badge
-                    className={`mt-2 rounded-full px-2 py-0.5 text-[11px] font-medium ${job.jobType === "Emergency Repair"
-                      ? "bg-red-100 text-red-700"
-                      : job.jobType === "Calibration"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-blue-100 text-blue-700"
-                      }`}
-                  >
-                    {job.jobType}
-                  </Badge>
+                  <span className="text-xs text-gray-400 font-medium">#{job.id}</span>
                 </div>
 
-                <div className="mt-3 space-y-1 text-sm text-gray-600">
+                {/* === Info Section === */}
+                <div className="mt-3 space-y-1.5 text-sm text-gray-700">
+
+                  {/* Date Range */}
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-gray-500" />
-                    <span>{job.dateRange}</span>
+                    <span className="text-gray-700 font-medium">
+                      {job.dateRange}
+                    </span>
                   </div>
 
+                  {/* Instrument */}
                   <div className="flex items-center gap-2">
                     <Cpu className="h-4 w-4 text-gray-500" />
-                    <span>{job.instrument}</span>
+                    <span className="font-medium">{job.instrument}</span>
                   </div>
+                </div>
 
+                <div className="flex flex-wrap items-center gap-2 mt-3">
+
+                  {/* Location Tag */}
+                  <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 flex items-center gap-1">
+                    <MapPin className="h-3 w-3 text-gray-500" />
+                    {job.location}
+                  </span>
+
+                  <span
+                    className={`text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 ${job.status === "Pending"
+                      ? "bg-gray-100 text-gray-700"
+                      : job.status === "In Progress"
+                        ? "bg-blue-100 text-blue-700"
+                        : job.status === "Pending FSR"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                  >
+                    {job.status === "In Progress" && (
+                      <Loader className="h-3 w-3 text-blue-700 animate-spin" />
+                    )}
+                    {job.status}
+                  </span>
+                </div>
+
+                {/* === Description === */}
+                {job.description && (
                   <p className="mt-3 text-gray-500 text-sm leading-snug line-clamp-2">
                     {job.description}
                   </p>
-                </div>
+                )}
+
+
               </CardContent>
             </Card>
           ))}
