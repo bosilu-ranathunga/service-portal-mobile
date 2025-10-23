@@ -12,6 +12,8 @@ import MobileNotifications from './mobile/pages/MobileNotifications.jsx';
 import MobileProfile from './mobile/pages/MobileProfile.jsx';
 import JobInfo from './mobile/pages/JobInfo.jsx';
 import FsrSubmitForm from './mobile/pages/FsrSubmitForm.jsx';
+import PdfView from './mobile/pages/PdfView.jsx';
+import FsrView from './mobile/pages/FsrView.jsx';
 
 import Login from './Login';
 
@@ -126,6 +128,8 @@ function App() {
         </Route>
         <Route path="job" element={<JobInfo />} />
         <Route path="fsr" element={<FsrSubmitForm />} />
+        <Route path="fsr/:fsrId" element={<FsrView />} />
+        <Route path="pdf-view" element={<PdfView />} />
         <Route path="login" element={<Login />} />
       </Routes>
     </Router>

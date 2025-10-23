@@ -8,6 +8,7 @@ import TopNameBar from '@/components/mobile/TopNameBar'
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toast'
 import ConfirmationDialog from '@/components/ui/ConfirmationDialog'
+import { X, FileImage } from 'lucide-react'
 
 /**
  * A helper component to display information with an optional icon.
@@ -35,16 +36,20 @@ const InfoRow = ({ label, value, icon: Icon }) => (
  * A helper component for clickable list items, like contacts or documents.
  * The icon and chevron provide clear native-like affordances.
  */
-const ClickableRow = ({ label, description, href, icon: Icon, target }) => (
+const ClickableRow = ({ label, description, href, icon: Icon, target, onClick }) => (
     <a
         href={href}
         target={target}
         rel={target === '_blank' ? 'noopener noreferrer' : undefined}
         className="flex items-center w-full py-4 space-x-4 group"
-        onClick={() => {
+        onClick={(e) => {
             try {
                 if (navigator?.vibrate) navigator.vibrate(50);
             } catch (_) { }
+            if (onClick) {
+                e.preventDefault();
+                onClick(e);
+            }
         }}
     >
         {Icon && (
@@ -70,6 +75,48 @@ export default function JobInfo() {
     const navigate = useNavigate();
     const { addToast } = useToast();
     const [isHolding, setIsHolding] = useState(false);
+
+    // Image zoom overlay state for Documents tab
+    const [docZoom, setDocZoom] = useState(null); // { url, name }
+    const zoomRef = useRef(null);
+    const [scale, setScale] = useState(1);
+    const [translate, setTranslate] = useState({ x: 0, y: 0 });
+    const [touches, setTouches] = useState([]);
+
+    const handleDocTouchStart = (e) => {
+        if (e.touches.length === 2) {
+            const distance = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            setTouches([distance]);
+        } else if (e.touches.length === 1) {
+            setTouches([
+                { x: e.touches[0].pageX - translate.x, y: e.touches[0].pageY - translate.y },
+            ]);
+        }
+    };
+    const handleDocTouchMove = (e) => {
+        if (e.touches.length === 2 && touches.length === 1) {
+            const newDistance = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            const scaleChange = newDistance / touches[0];
+            setScale(Math.min(Math.max(1, scaleChange), 4));
+        } else if (e.touches.length === 1 && touches.length === 1 && scale > 1) {
+            const newX = e.touches[0].pageX - touches[0].x;
+            const newY = e.touches[0].pageY - touches[0].y;
+            setTranslate({ x: newX, y: newY });
+        }
+    };
+    const handleDocTouchEnd = () => {
+        if (scale <= 1.05) {
+            setScale(1);
+            setTranslate({ x: 0, y: 0 });
+        }
+        setTouches([]);
+    };
 
 
 
@@ -166,8 +213,8 @@ export default function JobInfo() {
             },
         ],
         attachments: [
-            { name: 'Spectrophotometer-Manual.pdf', type: 'PDF' },
-            { name: 'Previous-Service-Report.jpg', type: 'Image' },
+            { name: '83056-01-02manual.pdf', type: 'PDF' },
+            { name: 'FSR-14809.jpeg', type: 'Image' },
         ],
     }
 
@@ -456,7 +503,8 @@ export default function JobInfo() {
                                         key={record.id}
                                         label={record.service}
                                         description={`Date: ${record.date} | Report: ${record.id}`}
-                                        href={`/fsr/${record.id}`} // Example link to the FSR
+                                        href={`/fsr/${record.id}`}
+                                        onClick={() => navigate(`/fsr/${record.id}`)}
                                     />
                                 ))}
                             </CardContent>
@@ -470,15 +518,47 @@ export default function JobInfo() {
                                 <CardTitle className="text-xl">Attached Documents</CardTitle>
                             </CardHeader>
                             <CardContent className="divide-y pt-0">
-                                {jobData.attachments.map((doc) => (
-                                    <ClickableRow
-                                        key={doc.name}
-                                        icon={Paperclip}
-                                        label={doc.name}
-                                        href={`/docs/${doc.name}`} // Example link to view/download
-                                        target="_blank"
-                                    />
-                                ))}
+                                {jobData.attachments.map((doc) => {
+                                    const url = `/assets/${doc.name}`;
+                                    const isImage = (doc.type || '').toLowerCase() === 'image' || /\.(png|jpg|jpeg|gif|webp)$/i.test(doc.name);
+                                    const isPdf = (doc.type || '').toLowerCase() === 'pdf' || /\.(pdf)$/i.test(doc.name);
+                                    if (isImage) {
+                                        return (
+                                            <li key={doc.name} className="list-none">
+                                                <ClickableRow
+                                                    icon={FileImage}
+                                                    label={doc.name}
+                                                    description={"Tap to view"}
+                                                    href={url}
+                                                    onClick={() => setDocZoom({ url, name: doc.name })}
+                                                />
+                                            </li>
+                                        );
+                                    }
+                                    if (isPdf) {
+                                        return (
+                                            <li key={doc.name} className="list-none">
+                                                <ClickableRow
+                                                    icon={Paperclip}
+                                                    label={doc.name}
+                                                    description={"Open PDF"}
+                                                    href={`/pdf-view?file=${encodeURIComponent(doc.name)}`}
+                                                    onClick={() => navigate(`/pdf-view?file=${encodeURIComponent(doc.name)}`)}
+                                                />
+                                            </li>
+                                        );
+                                    }
+                                    return (
+                                        <li key={doc.name} className="list-none">
+                                            <ClickableRow
+                                                icon={Paperclip}
+                                                label={doc.name}
+                                                href={url}
+                                                target="_blank"
+                                            />
+                                        </li>
+                                    );
+                                })}
                                 {jobData.attachments.length === 0 && (
                                     <p className="text-muted-foreground text-center py-6">
                                         No documents attached.
@@ -546,6 +626,30 @@ export default function JobInfo() {
                 message={confirmConfig.message}
                 confirmText={confirmConfig.confirmText}
             />
+
+            {/* Image Zoom Overlay for Documents */}
+            {docZoom && (
+                <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center touch-none">
+                    <button
+                        onClick={() => setDocZoom(null)}
+                        className="z-1 absolute top-5 right-5 bg-white/15 hover:bg-white/25 text-white p-3 rounded-full backdrop-blur-sm transition"
+                        aria-label="Close"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+
+                    <img
+                        ref={zoomRef}
+                        src={docZoom.url}
+                        alt={docZoom.name || 'document'}
+                        className="max-w-[95%] max-h-[95%] rounded-lg shadow-lg transition-transform duration-200 ease-out"
+                        style={{ transform: `scale(${scale}) translate(${translate.x}px, ${translate.y}px)` }}
+                        onTouchStart={handleDocTouchStart}
+                        onTouchMove={handleDocTouchMove}
+                        onTouchEnd={handleDocTouchEnd}
+                    />
+                </div>
+            )}
 
         </div>
     )
