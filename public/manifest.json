@@ -1,9 +1,9 @@
 {
     "name": "Service Portal Mobile",
-    "short_name": "Portal",
+    "short_name": "Service Pro",
     "start_url": "/login",
     "display": "standalone",
-    "background_color": "#155dfc",
+    "background_color": "#ffffff",
     "theme_color": "#155dfc",
     "description": "A mobile portal service app.",
     "icons": [
