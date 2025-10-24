@@ -2,23 +2,65 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { fieldService } from '@/services/mobileApi';
+import { ChevronRight, FileText } from 'lucide-react';
+
+// Clickable Row
+const ClickableRow = ({ label, description, icon: Icon, onClick }) => (
+  <button
+    onClick={(e) => {
+      if (navigator?.vibrate) navigator.vibrate(50);
+      if (onClick) onClick(e);
+    }}
+    className="flex items-center w-full py-4 space-x-4 group text-left"
+  >
+    {Icon && (
+      <Icon className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
+    )}
+
+    <div className="flex-1">
+      <p className="text-base font-medium group-hover:text-primary transition-colors">
+        {label}
+      </p>
+      <p className="text-sm text-muted-foreground">{description}</p>
+    </div>
+
+    <ChevronRight className="w-5 h-5 text-muted-foreground" />
+  </button>
+);
 
 const MobileFieldService = () => {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const data = await fieldService.getReports(); // Assuming getReports fetches the FRS data
-        setReports(data);
-      } catch (error) {
-        console.error('Error fetching reports:', error);
+    // Dummy data for field service reports
+    const dummyReports = [
+      {
+        id: 'FRS-001',
+        service: 'Pressure Gauge Check',
+        date: '22 Oct 2025',
+        status: 'Completed'
+      },
+      {
+        id: 'FRS-002',
+        service: 'Motor Calibration',
+        date: '20 Oct 2025',
+        status: 'In Progress'
+      },
+      {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
       }
-    };
+    ];
 
-    fetchReports();
+    setReports(dummyReports);
   }, []);
+
+  const handleClick = (reportId) => {
+    console.log("Navigate to FRS:", reportId);
+    // Add navigate(`/fsr/${reportId}`) here if using React Router
+  };
 
   return (
     <div className="p-4 space-y-4 pb-20">
@@ -29,28 +71,23 @@ const MobileFieldService = () => {
         </Button>
       </div>
 
-      <div className="space-y-4">
-        {reports.length > 0 ? (
-          reports.map((report) => (
-            <Card key={report.id} className="shadow-md">
-              <CardHeader>
-                <CardTitle>{report.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>{report.description}</p>
-                <div className="flex justify-between items-center mt-2">
-                  <Badge>{report.status}</Badge>
-                  <span className="text-sm text-gray-500">
-                    {new Date(report.date).toLocaleDateString()}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <p className="text-gray-500">No reports available.</p>
-        )}
-      </div>
+      <Card className="rounded-sm overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-xl">Service History</CardTitle>
+        </CardHeader>
+
+        <CardContent className="divide-y pt-0">
+          {reports.map((r) => (
+            <ClickableRow
+              key={r.id}
+              label={r.service}
+              description={`Date: ${r.date} | ID: ${r.id}`}
+              icon={FileText}
+              onClick={() => handleClick(r.id)}
+            />
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 };
