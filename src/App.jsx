@@ -41,7 +41,7 @@ function App() {
   const [canInstall, setCanInstall] = useState(false);
 
 
-  /*
+
 
   useEffect(() => {
     // Detect if app is opened as PWA
@@ -87,7 +87,7 @@ function App() {
           padding: "1rem",
         }}
       >
-        <h2>🔒 Access Restricted</h2>
+        <h2>Access Restricted</h2>
         <p>This app is available only as a PWA. Please install it to continue.</p>
         <p>Tap <strong>“Add to Home Screen”</strong> or use the button below.</p>
 
@@ -105,13 +105,13 @@ function App() {
               fontSize: "16px",
             }}
           >
-            📲 Install App
+            Install App
           </button>
         )}
       </div>
     );
   }
-*/
+
   return (
 
     <Router>

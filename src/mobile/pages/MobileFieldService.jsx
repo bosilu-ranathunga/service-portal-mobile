@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { ChevronRight, FileText } from 'lucide-react';
 
-// Clickable Row
+// Clickable Row component
 const ClickableRow = ({ label, description, icon: Icon, onClick }) => (
   <button
     onClick={(e) => {
@@ -32,7 +30,6 @@ const MobileFieldService = () => {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    // Dummy data for field service reports
     const dummyReports = [
       {
         id: 'FRS-001',
@@ -63,12 +60,9 @@ const MobileFieldService = () => {
   };
 
   return (
-    <div className="p-4 space-y-4 pb-20">
+    <div className="p-4 space-y-4 pb-28">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Field Service Reports</h1>
-        <Button className="bg-blue-500 text-white hover:bg-blue-600">
-          New Report
-        </Button>
       </div>
 
       <Card className="rounded-sm overflow-hidden">
@@ -88,6 +82,14 @@ const MobileFieldService = () => {
           ))}
         </CardContent>
       </Card>
+
+      {/* Floating Action Button */}
+      <button
+        onClick={() => console.log("Create New Report")}
+        className="fixed bottom-20 right-6 bg-blue-600 text-white font-bold text-3xl w-14 h-14 rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform"
+      >
+        +
+      </button>
     </div>
   );
 };
