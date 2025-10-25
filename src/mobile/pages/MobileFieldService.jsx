@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChevronRight, FileText } from 'lucide-react';
 
@@ -28,6 +29,7 @@ const ClickableRow = ({ label, description, icon: Icon, onClick }) => (
 
 const MobileFieldService = () => {
   const [reports, setReports] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const dummyReports = [
@@ -48,6 +50,41 @@ const MobileFieldService = () => {
         service: 'Sensor Replacement',
         date: '18 Oct 2025',
         status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
+      }, {
+        id: 'FRS-003',
+        service: 'Sensor Replacement',
+        date: '18 Oct 2025',
+        status: 'Pending'
       }
     ];
 
@@ -62,31 +99,29 @@ const MobileFieldService = () => {
   return (
     <div className="p-4 space-y-4 pb-28">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold">Field Service Reports</h1>
+        <h3 className="text-lg font-semibold text-gray-800">Field Service Reports</h3>
       </div>
 
-      <Card className="rounded-sm overflow-hidden">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl">Service History</CardTitle>
-        </CardHeader>
 
-        <CardContent className="divide-y pt-0">
-          {reports.map((r) => (
+
+      {reports.map((r) => (
+        <Card key={r.id} className="rounded-sm overflow-hidden">
+          <CardContent className="pt-0 pb-0">
             <ClickableRow
-              key={r.id}
               label={r.service}
               description={`Date: ${r.date} | ID: ${r.id}`}
               icon={FileText}
               onClick={() => handleClick(r.id)}
             />
-          ))}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ))}
+
 
       {/* Floating Action Button */}
       <button
-        onClick={() => console.log("Create New Report")}
-        className="fixed bottom-20 right-6 bg-blue-600 text-white font-bold text-3xl w-14 h-14 rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform"
+        onClick={() => navigate('/fsr')}
+        className="fixed bottom-26 right-6 bg-blue-600 text-white font-bold text-3xl w-14 h-14 rounded-sm shadow-lg flex items-center justify-center active:scale-95 transition-transform"
       >
         +
       </button>

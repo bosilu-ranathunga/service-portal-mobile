@@ -74,43 +74,38 @@ function App() {
     setCanInstall(false);
   };
 
+  {/* 
   if (!isPWA) {
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          padding: "1rem",
-        }}
-      >
-        <h2>Access Restricted</h2>
-        <p>This app is available only as a PWA. Please install it to continue.</p>
-        <p>Tap <strong>“Add to Home Screen”</strong> or use the button below.</p>
+      <div className="flex flex-col items-center justify-center h-screen px-6 text-center bg-gray-50">
+        <div className="max-w-md w-full bg-white rounded-sm shadow-sm p-8">
 
-        {canInstall && (
-          <button
-            onClick={handleInstallClick}
-            style={{
-              background: "#007bff",
-              color: "#fff",
-              border: "none",
-              padding: "10px 18px",
-              borderRadius: "8px",
-              cursor: "pointer",
-              marginTop: "16px",
-              fontSize: "16px",
-            }}
-          >
-            Install App
-          </button>
-        )}
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Access Restricted
+          </h2>
+
+          <p className="text-gray-600 mb-2">
+            This app is available only as a PWA. Please install it to continue.
+          </p>
+
+          <p className="text-gray-600 mb-6">
+            Tap <strong className="text-gray-800">“Add to Home Screen”</strong> or use the button below.
+          </p>
+
+          {canInstall && (
+            <button
+              onClick={handleInstallClick}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-5 rounded-sm transition-all duration-200"
+            >
+              Install App
+            </button>
+          )}
+        </div>
       </div>
+
     );
   }
+  */}
 
   return (
 
