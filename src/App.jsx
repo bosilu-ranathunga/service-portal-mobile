@@ -74,7 +74,7 @@ function App() {
     setCanInstall(false);
   };
 
-  {/* 
+
   if (!isPWA) {
     return (
       <div className="flex flex-col items-center justify-center h-screen px-6 text-center bg-gray-50">
@@ -105,7 +105,7 @@ function App() {
 
     );
   }
-  */}
+
 
   return (
 
